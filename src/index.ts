@@ -60,10 +60,45 @@ window.addEventListener('DOMContentLoaded', () => {
       duration: 400,
       easing: 'cubic-bezier(0.4, 0.2, 0.2, 1)'
     });
-    // below create writing saying "goals" to open a a new page
-    
+
+    // Show or toggle a transparent vertical nav bar below the button
+    let navBar = document.getElementById('nav-bar');
+    if (!navBar) {
+      navBar = document.createElement('nav');
+      navBar.id = 'nav-bar';
+      navBar.style.position = 'absolute';
+      navBar.style.top = '70px';
+      navBar.style.left = '18px';
+      navBar.style.display = 'flex';
+      navBar.style.flexDirection = 'column';
+      navBar.style.padding = '8px 20px';
+      navBar.style.fontFamily = "'Caveat', 'Comic Sans MS', 'Brush Script MT', cursive, arial, sans-serif";
+      navBar.style.fontWeight = '600';
+      navBar.style.fontSize = '1.0em';
+      navBar.style.color = '#333';
+      navBar.style.cursor = 'pointer';
+      navBar.style.transition = 'opacity 0.2s';
+      navBar.innerHTML = `<div style="padding:10px 0;text-align:left;">Goals</div>`;
+      app.appendChild(navBar);
+    } else {
+      navBar.style.display = navBar.style.display === 'none' ? 'flex' : 'none';
+      // Animate the nav bar rotation
+      navBar.animate([
+        { transform: 'rotate(0deg)' },
+        { transform: 'rotate(360deg)' }
+      ], {
+        duration: 400,
+        easing: 'cubic-bezier(0.4, 0.2, 0.2, 1)'
+      });
+    }
   });
   app.appendChild(menuBtn);
+
+  // Add Google Fonts Caveat for scrapbook/handwritten look
+  const fontLink = document.createElement('link');
+  fontLink.rel = 'stylesheet';
+  fontLink.href = 'https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap';
+  document.head.appendChild(fontLink);
 });
 
 export {};
