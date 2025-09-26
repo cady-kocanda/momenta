@@ -10,7 +10,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // Inject minimal style for centered home image
   const style = document.createElement('style');
   style.textContent = `
-    body { display: flex; align-items: center; justify-content: center; padding: 24px; background: #fff3f8; }
+    body { display: flex; align-items: center; justify-content: center; padding: 24px; background: #fff; }
     #app { width: 100vw; height: 100vh; max-width: 420px; max-height: 90vh; display: flex; align-items: center; justify-content: center; background: #fff3f8; border-radius: 18px; position: relative; }
     .home-img { width: 100%; height: auto; display: block; border-radius: 16px; }
     .menu-btn {
