@@ -1,0 +1,14 @@
+{
+  "name": "momenta-simple-ts-webapp",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && npx serve -s .",
+    "dev": "tsc --watch"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0",
+    "serve": "^14.0.1"
+  }
+}
