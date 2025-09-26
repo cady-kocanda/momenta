@@ -1,5 +1,6 @@
 const app = document.getElementById('app')!;
 const btn = document.getElementById('btn')! as HTMLButtonElement;
+const imageGrid = document.querySelector('.image-grid')!;
 
 // List your actual image filenames from the /images directory
 const imageFilenames = [
@@ -12,14 +13,13 @@ const imageFilenames = [
   'stamp2.png',
   'star.png',
   'star2.png',
+  'UI.png',
 ];
 
-// Create and append images to the app
+// Create and append images to the image grid for mobile layout
 imageFilenames.forEach(filename => {
   const img = document.createElement('img');
   img.src = `/images/${filename}`;
   img.alt = filename;
-  img.style.maxWidth = '200px'; // Optional styling
-  img.style.margin = '10px';
-  app.appendChild(img);
+  imageGrid.appendChild(img);
 });
