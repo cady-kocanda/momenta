@@ -53,7 +53,15 @@ window.addEventListener('DOMContentLoaded', () => {
   menuImg.alt = 'Goals menu';
   menuBtn.appendChild(menuImg);
   menuBtn.addEventListener('click', () => {
-    alert('Goals menu clicked!');
+    menuBtn.animate([
+      { transform: 'rotate(0deg)' },
+      { transform: 'rotate(360deg)' }
+    ], {
+      duration: 400,
+      easing: 'cubic-bezier(0.4, 0.2, 0.2, 1)'
+    });
+    // below create writing saying "goals" to open a a new page
+    
   });
   app.appendChild(menuBtn);
 });
