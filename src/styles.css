@@ -125,7 +125,7 @@ body { font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif; d
 }
 
 .section-header h2 {
-  font-family: 'Caveat', 'Comic Sans MS', cursive;
+  font-family: 'Great Vibes', cursive;
   font-size: 24px;
   font-weight: 700;
   color: var(--text-dark);
@@ -144,7 +144,7 @@ body { font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif; d
   padding: 10px 14px;
   border: 2px solid var(--border);
   border-radius: 12px;
-  font-family: 'Caveat', 'Comic Sans MS', cursive;
+  font-family: 'Great Vibes', cursive;
   font-size: 16px;
   background: var(--card-bg);
   color: var(--text-dark);
@@ -165,7 +165,7 @@ body { font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif; d
   padding: 10px 14px;
   border: 2px solid var(--border);
   border-radius: 12px;
-  font-family: 'Caveat', 'Comic Sans MS', cursive;
+  font-family: 'Great Vibes', cursive;
   font-size: 16px;
   background: var(--card-bg);
   color: var(--text-dark);
@@ -227,7 +227,7 @@ body { font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif; d
 }
 
 .empty-state p {
-  font-family: 'Caveat', 'Comic Sans MS', cursive;
+  font-family: 'Great Vibes', cursive;
   font-size: 16px;
   color: var(--text-light);
   margin: 0;
@@ -275,7 +275,7 @@ body { font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif; d
 }
 
 .item-content span {
-  font-family: 'Caveat', 'Comic Sans MS', cursive;
+  font-family: 'Great Vibes', cursive;
   font-size: 18px;
   color: var(--text-dark);
   word-break: break-word;
@@ -315,7 +315,7 @@ body { font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif; d
 }
 
 .group-title {
-  font-family: 'Caveat', 'Comic Sans MS', cursive;
+  font-family: 'Great Vibes', cursive;
   font-size: 18px;
   font-weight: 700;
   color: var(--text-dark);
