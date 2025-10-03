@@ -231,8 +231,10 @@ export default function GoalsPage({ onBack }: Props) {
           </div>
         </div>
 
-        <div className="motivational-banner">
-          <img src="/images/nevergiveup.jpg" alt="Never give up" className="banner-img" />
+        <div className="floating-decorations">
+          <img src="/images/stamp.png" alt="Stamp" className="floating-item stamp" />
+          <img src="/images/coffee.png" alt="Coffee" className="floating-item coffee" />
+          <img src="/images/disco.png" alt="Disco" className="floating-item disco" />
         </div>
       </div>
     </div>
