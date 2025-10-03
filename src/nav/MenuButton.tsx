@@ -2,9 +2,11 @@ import React, { useRef, useState } from 'react'
 
 type Props = {
   onClick: () => void
+  onInspoClick?: () => void
 }
 
-export default function MenuButton({ onClick }: Props) {
+export default function MenuButton({ onClick, onInspoClick }: Props) {
+  const props = { onInspoClick };
   const btnRef = useRef<HTMLButtonElement>(null)
   const [showNav, setShowNav] = useState(false)
 
@@ -51,7 +53,8 @@ export default function MenuButton({ onClick }: Props) {
             transition: 'opacity 0.2s',
           }}
         >
-          <div onClick={handleNavClick} style={{ padding: '10px 0', textAlign: 'left' }}>Set Goals</div>
+          <div onClick={() => { handleNavClick(); onClick(); }} style={{ padding: '10px 0', textAlign: 'left' }}>Set Goals</div>
+          <div onClick={() => { handleNavClick(); if (props.onInspoClick) props.onInspoClick(); }} style={{ padding: '10px 0', textAlign: 'left' }}>Inspo</div>
         </nav>
       )}
     </>
