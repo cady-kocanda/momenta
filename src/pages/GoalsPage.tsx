@@ -1,8 +1,20 @@
-import React, { useState, useEffect } from 'react'
-import { supabase, Goal, Todo } from '../lib/supabase'
+import React, { useState } from 'react'
 
 type Props = {
   onBack: () => void
+}
+
+type Goal = {
+  id: string
+  title: string
+  is_completed: boolean
+}
+
+type Todo = {
+  id: string
+  goal_id: string | null
+  title: string
+  is_completed: boolean
 }
 
 export default function GoalsPage({ onBack }: Props) {
@@ -11,76 +23,44 @@ export default function GoalsPage({ onBack }: Props) {
   const [newGoal, setNewGoal] = useState('')
   const [newTodo, setNewTodo] = useState('')
   const [selectedGoalId, setSelectedGoalId] = useState<string | null>(null)
-  const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    loadData()
-  }, [])
-
-  async function loadData() {
-    setLoading(true)
-    const [goalsRes, todosRes] = await Promise.all([
-      supabase.from('goals').select('*').order('created_at', { ascending: false }),
-      supabase.from('todos').select('*').order('created_at', { ascending: false })
-    ])
-
-    if (goalsRes.data) setGoals(goalsRes.data)
-    if (todosRes.data) setTodos(todosRes.data)
-    setLoading(false)
-  }
-
-  async function addGoal() {
+  function addGoal() {
     if (!newGoal.trim()) return
-    const { data, error } = await supabase
-      .from('goals')
-      .insert([{ title: newGoal }])
-      .select()
-
-    if (data && data[0]) {
-      setGoals([data[0], ...goals])
-      setNewGoal('')
+    const goal: Goal = {
+      id: Date.now().toString(),
+      title: newGoal,
+      is_completed: false
     }
+    setGoals([goal, ...goals])
+    setNewGoal('')
   }
 
-  async function addTodo() {
+  function addTodo() {
     if (!newTodo.trim()) return
-    const { data, error } = await supabase
-      .from('todos')
-      .insert([{ title: newTodo, goal_id: selectedGoalId }])
-      .select()
-
-    if (data && data[0]) {
-      setTodos([data[0], ...todos])
-      setNewTodo('')
+    const todo: Todo = {
+      id: Date.now().toString(),
+      title: newTodo,
+      goal_id: selectedGoalId,
+      is_completed: false
     }
+    setTodos([todo, ...todos])
+    setNewTodo('')
   }
 
-  async function toggleGoal(id: string, isCompleted: boolean) {
-    await supabase
-      .from('goals')
-      .update({ is_completed: !isCompleted })
-      .eq('id', id)
-
+  function toggleGoal(id: string, isCompleted: boolean) {
     setGoals(goals.map(g => g.id === id ? { ...g, is_completed: !isCompleted } : g))
   }
 
-  async function toggleTodo(id: string, isCompleted: boolean) {
-    await supabase
-      .from('todos')
-      .update({ is_completed: !isCompleted })
-      .eq('id', id)
-
+  function toggleTodo(id: string, isCompleted: boolean) {
     setTodos(todos.map(t => t.id === id ? { ...t, is_completed: !isCompleted } : t))
   }
 
-  async function deleteGoal(id: string) {
-    await supabase.from('goals').delete().eq('id', id)
+  function deleteGoal(id: string) {
     setGoals(goals.filter(g => g.id !== id))
     setTodos(todos.filter(t => t.goal_id !== id))
   }
 
-  async function deleteTodo(id: string) {
-    await supabase.from('todos').delete().eq('id', id)
+  function deleteTodo(id: string) {
     setTodos(todos.filter(t => t.id !== id))
   }
 
@@ -118,7 +98,7 @@ export default function GoalsPage({ onBack }: Props) {
           </div>
 
           <div className="items-list">
-            {goals.length === 0 && !loading && (
+            {goals.length === 0 && (
               <div className="empty-state">
                 <img src="/images/scrapbookitem.png" alt="Empty" className="empty-img" />
                 <p>No goals yet. Create your first one!</p>
@@ -170,7 +150,7 @@ export default function GoalsPage({ onBack }: Props) {
           </div>
 
           <div className="items-list">
-            {standaloneTodos.length === 0 && goals.length === 0 && !loading && (
+            {standaloneTodos.length === 0 && goals.length === 0 && (
               <div className="empty-state">
                 <img src="/images/scrapbookitem2.png" alt="Empty" className="empty-img" />
                 <p>No to-dos yet. Add your first task!</p>
