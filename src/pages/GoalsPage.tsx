@@ -7,64 +7,102 @@ type Props = {
 type Goal = {
   id: string
   title: string
-  is_completed: boolean
+  progress: number
 }
 
-type Todo = {
+type TodoList = {
   id: string
-  goal_id: string | null
   title: string
+  items: TodoItem[]
+}
+
+type TodoItem = {
+  id: string
+  text: string
   is_completed: boolean
 }
 
 export default function GoalsPage({ onBack }: Props) {
   const [goals, setGoals] = useState<Goal[]>([])
-  const [todos, setTodos] = useState<Todo[]>([])
+  const [todoLists, setTodoLists] = useState<TodoList[]>([])
   const [newGoal, setNewGoal] = useState('')
-  const [newTodo, setNewTodo] = useState('')
-  const [selectedGoalId, setSelectedGoalId] = useState<string | null>(null)
+  const [newListName, setNewListName] = useState('')
+  const [newItemText, setNewItemText] = useState<{ [listId: string]: string }>({})
 
   function addGoal() {
     if (!newGoal.trim()) return
     const goal: Goal = {
       id: Date.now().toString(),
       title: newGoal,
-      is_completed: false
+      progress: 0
     }
     setGoals([goal, ...goals])
     setNewGoal('')
   }
 
-  function addTodo() {
-    if (!newTodo.trim()) return
-    const todo: Todo = {
-      id: Date.now().toString(),
-      title: newTodo,
-      goal_id: selectedGoalId,
-      is_completed: false
-    }
-    setTodos([todo, ...todos])
-    setNewTodo('')
-  }
-
-  function toggleGoal(id: string, isCompleted: boolean) {
-    setGoals(goals.map(g => g.id === id ? { ...g, is_completed: !isCompleted } : g))
-  }
-
-  function toggleTodo(id: string, isCompleted: boolean) {
-    setTodos(todos.map(t => t.id === id ? { ...t, is_completed: !isCompleted } : t))
+  function updateGoalProgress(id: string, progress: number) {
+    setGoals(goals.map(g => g.id === id ? { ...g, progress } : g))
   }
 
   function deleteGoal(id: string) {
     setGoals(goals.filter(g => g.id !== id))
-    setTodos(todos.filter(t => t.goal_id !== id))
   }
 
-  function deleteTodo(id: string) {
-    setTodos(todos.filter(t => t.id !== id))
+  function addTodoList() {
+    if (!newListName.trim()) return
+    const list: TodoList = {
+      id: Date.now().toString(),
+      title: newListName,
+      items: []
+    }
+    setTodoLists([list, ...todoLists])
+    setNewListName('')
   }
 
-  const standaloneTodos = todos.filter(t => !t.goal_id)
+  function addTodoItem(listId: string) {
+    const text = newItemText[listId]?.trim()
+    if (!text) return
+
+    setTodoLists(todoLists.map(list => {
+      if (list.id === listId) {
+        const newItem: TodoItem = {
+          id: Date.now().toString(),
+          text,
+          is_completed: false
+        }
+        return { ...list, items: [...list.items, newItem] }
+      }
+      return list
+    }))
+    setNewItemText({ ...newItemText, [listId]: '' })
+  }
+
+  function toggleTodoItem(listId: string, itemId: string) {
+    setTodoLists(todoLists.map(list => {
+      if (list.id === listId) {
+        return {
+          ...list,
+          items: list.items.map(item =>
+            item.id === itemId ? { ...item, is_completed: !item.is_completed } : item
+          )
+        }
+      }
+      return list
+    }))
+  }
+
+  function deleteTodoItem(listId: string, itemId: string) {
+    setTodoLists(todoLists.map(list => {
+      if (list.id === listId) {
+        return { ...list, items: list.items.filter(item => item.id !== itemId) }
+      }
+      return list
+    }))
+  }
+
+  function deleteTodoList(id: string) {
+    setTodoLists(todoLists.filter(list => list.id !== id))
+  }
 
   return (
     <div className="goals-page">
@@ -105,17 +143,22 @@ export default function GoalsPage({ onBack }: Props) {
               </div>
             )}
             {goals.map(goal => (
-              <div key={goal.id} className="item-card goal-card">
-                <div className="item-content">
-                  <input
-                    type="checkbox"
-                    checked={goal.is_completed}
-                    onChange={() => toggleGoal(goal.id, goal.is_completed)}
-                    className="checkbox"
-                  />
-                  <span className={goal.is_completed ? 'completed' : ''}>{goal.title}</span>
+              <div key={goal.id} className="goal-card-new">
+                <div className="goal-header">
+                  <span className="goal-title">{goal.title}</span>
+                  <button onClick={() => deleteGoal(goal.id)} className="delete-btn">×</button>
                 </div>
-                <button onClick={() => deleteGoal(goal.id)} className="delete-btn">×</button>
+                <div className="progress-section">
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={goal.progress}
+                    onChange={(e) => updateGoalProgress(goal.id, parseInt(e.target.value))}
+                    className="progress-slider"
+                  />
+                  <span className="progress-text">{goal.progress}%</span>
+                </div>
               </div>
             ))}
           </div>
@@ -124,86 +167,67 @@ export default function GoalsPage({ onBack }: Props) {
         <div className="section">
           <div className="section-header">
             <img src="/images/stamp2.png" alt="To-Dos" className="section-icon" />
-            <h2>To-Do List</h2>
+            <h2>To-Do Lists</h2>
           </div>
 
           <div className="input-group">
-            <select
-              value={selectedGoalId || ''}
-              onChange={(e) => setSelectedGoalId(e.target.value || null)}
-              className="goal-select"
-            >
-              <option value="">Standalone to-do</option>
-              {goals.map(g => (
-                <option key={g.id} value={g.id}>{g.title}</option>
-              ))}
-            </select>
             <input
               type="text"
-              value={newTodo}
-              onChange={(e) => setNewTodo(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && addTodo()}
-              placeholder="Enter a new to-do..."
-              className="todo-input"
+              value={newListName}
+              onChange={(e) => setNewListName(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && addTodoList()}
+              placeholder="Create a new list..."
+              className="goal-input"
             />
-            <button onClick={addTodo} className="add-btn">+</button>
+            <button onClick={addTodoList} className="add-btn">+</button>
           </div>
 
           <div className="items-list">
-            {standaloneTodos.length === 0 && goals.length === 0 && (
+            {todoLists.length === 0 && (
               <div className="empty-state">
                 <img src="/images/scrapbookitem2.png" alt="Empty" className="empty-img" />
-                <p>No to-dos yet. Add your first task!</p>
+                <p>No lists yet. Create your first one!</p>
               </div>
             )}
 
-            {standaloneTodos.length > 0 && (
-              <div className="todo-group">
-                <h3 className="group-title">Standalone</h3>
-                {standaloneTodos.map(todo => (
-                  <div key={todo.id} className="item-card todo-card">
-                    <div className="item-content">
+            {todoLists.map(list => (
+              <div key={list.id} className="todo-list-card">
+                <div className="list-header">
+                  <h3 className="list-title">
+                    <img src="/images/coffee.png" alt="List" className="group-icon" />
+                    {list.title}
+                  </h3>
+                  <button onClick={() => deleteTodoList(list.id)} className="delete-btn">×</button>
+                </div>
+
+                <div className="list-items">
+                  {list.items.map(item => (
+                    <div key={item.id} className="list-item">
                       <input
                         type="checkbox"
-                        checked={todo.is_completed}
-                        onChange={() => toggleTodo(todo.id, todo.is_completed)}
+                        checked={item.is_completed}
+                        onChange={() => toggleTodoItem(list.id, item.id)}
                         className="checkbox"
                       />
-                      <span className={todo.is_completed ? 'completed' : ''}>{todo.title}</span>
-                    </div>
-                    <button onClick={() => deleteTodo(todo.id)} className="delete-btn">×</button>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {goals.map(goal => {
-              const goalTodos = todos.filter(t => t.goal_id === goal.id)
-              if (goalTodos.length === 0) return null
-
-              return (
-                <div key={goal.id} className="todo-group">
-                  <h3 className="group-title">
-                    <img src="/images/coffee.png" alt="Goal" className="group-icon" />
-                    {goal.title}
-                  </h3>
-                  {goalTodos.map(todo => (
-                    <div key={todo.id} className="item-card todo-card">
-                      <div className="item-content">
-                        <input
-                          type="checkbox"
-                          checked={todo.is_completed}
-                          onChange={() => toggleTodo(todo.id, todo.is_completed)}
-                          className="checkbox"
-                        />
-                        <span className={todo.is_completed ? 'completed' : ''}>{todo.title}</span>
-                      </div>
-                      <button onClick={() => deleteTodo(todo.id)} className="delete-btn">×</button>
+                      <span className={item.is_completed ? 'completed' : ''}>{item.text}</span>
+                      <button onClick={() => deleteTodoItem(list.id, item.id)} className="delete-btn-small">×</button>
                     </div>
                   ))}
                 </div>
-              )
-            })}
+
+                <div className="add-item-group">
+                  <input
+                    type="text"
+                    value={newItemText[list.id] || ''}
+                    onChange={(e) => setNewItemText({ ...newItemText, [list.id]: e.target.value })}
+                    onKeyPress={(e) => e.key === 'Enter' && addTodoItem(list.id)}
+                    placeholder="Add item..."
+                    className="item-input"
+                  />
+                  <button onClick={() => addTodoItem(list.id)} className="add-btn-small">+</button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
