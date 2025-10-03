@@ -1,8 +1,10 @@
 import React, { useRef, useState } from 'react'
 
-type Props = {}
+type Props = {
+  onClick: () => void
+}
 
-export default function MenuButton({}: Props) {
+export default function MenuButton({ onClick }: Props) {
   const btnRef = useRef<HTMLButtonElement>(null)
   const [showNav, setShowNav] = useState(false)
 
@@ -17,6 +19,11 @@ export default function MenuButton({}: Props) {
       })
     }
     setShowNav(v => !v)
+  }
+
+  const handleNavClick = () => {
+    setShowNav(false)
+    onClick()
   }
 
   return (
@@ -44,7 +51,7 @@ export default function MenuButton({}: Props) {
             transition: 'opacity 0.2s',
           }}
         >
-          <div style={{ padding: '10px 0', textAlign: 'left' }}>Set Goals</div>
+          <div onClick={handleNavClick} style={{ padding: '10px 0', textAlign: 'left' }}>Set Goals</div>
         </nav>
       )}
     </>
