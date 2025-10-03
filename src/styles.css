@@ -8,7 +8,7 @@
   --shadow: rgba(0,0,0,0.08);
 }
 html,body,#root { height: 100%; margin: 0; }
-body { font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif; display:flex; align-items:center; justify-content:center; background: var(--bg); }
+body { font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif; display:flex; align-items:center; justify-content:center; background: #fff !important; }
 .app-root { width: 100vw; height: 100vh; max-width: 420px; max-height: 90vh; box-sizing: border-box; border-radius: 18px; background: var(--bg); position: relative; display: flex; align-items: center; justify-content: center; padding: 0; overflow: hidden; }
 .home-wrap { position: relative; width: 100%; }
 .home-img { width: 100%; height: auto; display: block; border-radius: 16px; }
