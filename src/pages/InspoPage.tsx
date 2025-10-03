@@ -19,12 +19,17 @@ const DEMO_IMAGES = [
 ]
 
 export default function InspoPage({ onBack }: Props) {
-  const [mode, setMode] = useState<'demo' | 'pinterest'>('demo')
-  const [pinterestConnected, setPinterestConnected] = useState(false)
+  const [stage, setStage] = useState<'choose' | 'loading' | 'loaded'>('choose')
+  const [mode, setMode] = useState<'demo' | 'pinterest' | null>(null)
 
-  const handleConnectPinterest = () => {
-    // Placeholder for Pinterest OAuth flow
-    alert('Pinterest connection coming soon! For now, enjoy the demo mode.')
+  const handleChoice = (choice: 'demo' | 'pinterest') => {
+    setMode(choice)
+    setStage('loading')
+    
+    // Show loading for 2 seconds
+    setTimeout(() => {
+      setStage('loaded')
+    }, 2000)
   }
 
   return (
@@ -67,85 +72,173 @@ export default function InspoPage({ onBack }: Props) {
         <div style={{ width: 40 }} />
       </div>
 
-      {/* Mode Toggle */}
-      <div style={{
-        padding: '16px 20px',
-        display: 'flex',
-        gap: '12px',
-        justifyContent: 'center'
-      }}>
-        <button
-          onClick={() => setMode('demo')}
-          style={{
-            padding: '8px 20px',
-            background: mode === 'demo' ? 'var(--accent)' : 'transparent',
-            border: '2px solid var(--accent)',
-            borderRadius: '20px',
-            cursor: 'pointer',
-            fontFamily: "'Dancing Script', cursive",
-            fontSize: '1.1em',
-            color: mode === 'demo' ? '#fff' : 'var(--text)',
-            transition: 'all 0.3s'
-          }}
-        >
-          Demo Mode
-        </button>
-        <button
-          onClick={handleConnectPinterest}
-          style={{
-            padding: '8px 20px',
-            background: mode === 'pinterest' ? 'var(--accent)' : 'transparent',
-            border: '2px solid var(--accent)',
-            borderRadius: '20px',
-            cursor: 'pointer',
-            fontFamily: "'Dancing Script', cursive",
-            fontSize: '1.1em',
-            color: mode === 'pinterest' ? '#fff' : 'var(--text)',
-            transition: 'all 0.3s'
-          }}
-        >
-          Connect Pinterest
-        </button>
-      </div>
-
-      {/* Image Grid */}
-      <div style={{
-        flex: 1,
-        overflowY: 'auto',
-        padding: '0 20px 20px'
-      }}>
+      {/* Content based on stage */}
+      {stage === 'choose' && (
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: '12px'
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '24px',
+          padding: '40px'
         }}>
-          {DEMO_IMAGES.map((img, idx) => (
-            <div
-              key={idx}
-              style={{
-                aspectRatio: '1',
-                borderRadius: '12px',
-                overflow: 'hidden',
-                boxShadow: '0 2px 8px var(--shadow)',
-                cursor: 'pointer',
-                transition: 'transform 0.2s'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-              onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-            >
-              <img
-                src={img}
-                alt={`Inspiration ${idx + 1}`}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover'
-                }}
-              />
-            </div>
-          ))}
+          <h2 style={{
+            fontFamily: "'Dancing Script', cursive",
+            fontSize: '1.5em',
+            color: 'var(--text)',
+            textAlign: 'center',
+            marginBottom: '20px'
+          }}>
+            Choose your inspiration source
+          </h2>
+          
+          <button
+            onClick={() => handleChoice('pinterest')}
+            style={{
+              width: '220px',
+              padding: '20px',
+              background: '#fff',
+              border: '3px solid #E60023',
+              borderRadius: '16px',
+              cursor: 'pointer',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '12px',
+              transition: 'transform 0.2s, box-shadow 0.2s',
+              boxShadow: '0 4px 12px var(--shadow)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.05)'
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(230, 0, 35, 0.3)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)'
+              e.currentTarget.style.boxShadow = '0 4px 12px var(--shadow)'
+            }}
+          >
+            <img 
+              src="/images/pinterest-logo.png" 
+              alt="Pinterest"
+              style={{ width: '60px', height: '60px', objectFit: 'contain' }}
+            />
+            <span style={{
+              fontFamily: "'Dancing Script', cursive",
+              fontSize: '1.3em',
+              color: '#E60023',
+              fontWeight: 600
+            }}>
+              Connect Pinterest
+            </span>
+          </button>
+
+          <button
+            onClick={() => handleChoice('demo')}
+            style={{
+              width: '220px',
+              padding: '20px',
+              background: 'var(--accent)',
+              border: 'none',
+              borderRadius: '16px',
+              cursor: 'pointer',
+              transition: 'transform 0.2s, box-shadow 0.2s',
+              boxShadow: '0 4px 12px var(--shadow)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.05)'
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.2)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)'
+              e.currentTarget.style.boxShadow = '0 4px 12px var(--shadow)'
+            }}
+          >
+            <span style={{
+              fontFamily: "'Dancing Script', cursive",
+              fontSize: '1.3em',
+              color: '#fff',
+              fontWeight: 600
+            }}>
+              Try Demo
+            </span>
+          </button>
         </div>
-      </div>
+      )}
+
+      {stage === 'loading' && (
+        <div style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '24px'
+        }}>
+          <div style={{
+            width: '60px',
+            height: '60px',
+            border: '4px solid var(--shadow)',
+            borderTop: '4px solid var(--accent)',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite'
+          }} />
+          <p style={{
+            fontFamily: "'Dancing Script', cursive",
+            fontSize: '1.5em',
+            color: 'var(--text)',
+            textAlign: 'center'
+          }}>
+            fetching your inspo...
+          </p>
+          <style>{`
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          `}</style>
+        </div>
+      )}
+
+      {stage === 'loaded' && (
+        <div style={{
+          flex: 1,
+          overflowY: 'auto',
+          padding: '0 20px 20px'
+        }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '12px'
+          }}>
+            {DEMO_IMAGES.map((img, idx) => (
+              <div
+                key={idx}
+                style={{
+                  aspectRatio: '1',
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  boxShadow: '0 2px 8px var(--shadow)',
+                  cursor: 'pointer',
+                  transition: 'transform 0.2s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+              >
+                <img
+                  src={img}
+                  alt={`Inspiration ${idx + 1}`}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover'
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
