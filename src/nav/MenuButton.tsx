@@ -37,14 +37,14 @@ export default function MenuButton({ onClick, onInspoClick }: Props) {
         <nav
           style={{
             position: 'absolute',
-            top: 70,
-            left: 18,
+            top: 60,
+            left: 20,
             display: 'flex',
             flexDirection: 'column',
-            padding: '8px 20px',
+            padding: '4px 5px',
             fontFamily: "'Dancing Script', cursive",
             fontWeight: 600,
-            fontSize: '1.2em',
+            fontSize: '1.0em',
             color: '#000000ff',
             cursor: 'pointer',
             minWidth: 90,

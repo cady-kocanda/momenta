@@ -119,7 +119,7 @@ export default function GoalsPage({ onBack }: Props) {
 
         <div className="section">
           <div className="section-header">
-            <img src="/images/stamp.png" alt="Goals" className="section-icon" />
+            <img src="/images/disco.png" alt="Goals" className="section-icon" />
             <h2>Goals</h2>
           </div>
 
@@ -166,7 +166,7 @@ export default function GoalsPage({ onBack }: Props) {
 
         <div className="section">
           <div className="section-header">
-            <img src="/images/stamp2.png" alt="To-Dos" className="section-icon" />
+            <img src="/images/star.png" alt="To-Dos" className="section-icon" />
             <h2>To-Do Lists</h2>
           </div>
 
