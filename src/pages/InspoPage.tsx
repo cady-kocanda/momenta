@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { startPinterestOAuth, syncPinterestPins, getPinterestPins, getPinterestConnection, type PinterestPin } from '../services/pinterest'
 
 type Props = {
   onBack: () => void
@@ -21,15 +22,47 @@ const DEMO_IMAGES = [
 export default function InspoPage({ onBack }: Props) {
   const [stage, setStage] = useState<'choose' | 'loading' | 'loaded'>('choose')
   const [mode, setMode] = useState<'demo' | 'pinterest' | null>(null)
+  const [pinterestPins, setPinterestPins] = useState<PinterestPin[]>([])
+  const [error, setError] = useState<string | null>(null)
+  const [isConnected, setIsConnected] = useState(false)
 
-  const handleChoice = (choice: 'demo' | 'pinterest') => {
+  useEffect(() => {
+    checkPinterestConnection()
+  }, [])
+
+  const checkPinterestConnection = async () => {
+    const connection = await getPinterestConnection()
+    setIsConnected(!!connection)
+  }
+
+  const handleChoice = async (choice: 'demo' | 'pinterest') => {
     setMode(choice)
     setStage('loading')
-    
-    // Show loading for 2 seconds
-    setTimeout(() => {
+    setError(null)
+
+    if (choice === 'demo') {
+      setTimeout(() => {
+        setStage('loaded')
+      }, 2000)
+      return
+    }
+
+    try {
+      if (!isConnected) {
+        const authUrl = await startPinterestOAuth()
+        window.location.href = authUrl
+        return
+      }
+
+      await syncPinterestPins()
+      const pins = await getPinterestPins()
+      setPinterestPins(pins)
       setStage('loaded')
-    }, 2000)
+    } catch (err) {
+      console.error('Pinterest error:', err)
+      setError(err instanceof Error ? err.message : 'Failed to connect to Pinterest')
+      setStage('choose')
+    }
   }
 
   return (
@@ -71,6 +104,19 @@ export default function InspoPage({ onBack }: Props) {
         </h1>
         <div style={{ width: 40 }} />
       </div>
+
+      {/* Error message */}
+      {error && (
+        <div style={{
+          padding: '16px 20px',
+          background: '#fee',
+          color: '#c00',
+          textAlign: 'center',
+          borderBottom: '1px solid #fcc'
+        }}>
+          {error}
+        </div>
+      )}
 
       {/* Content based on stage */}
       {stage === 'choose' && (
@@ -118,8 +164,8 @@ export default function InspoPage({ onBack }: Props) {
               e.currentTarget.style.boxShadow = '0 4px 12px var(--shadow)'
             }}
           >
-            <img 
-              src="/images/pinterest-logo.png" 
+            <img
+              src="/public/images/pinterest-logo.png"
               alt="Pinterest"
               style={{ width: '60px', height: '60px', objectFit: 'contain' }}
             />
@@ -129,7 +175,7 @@ export default function InspoPage({ onBack }: Props) {
               color: '#E60023',
               fontWeight: 600
             }}>
-              Connect Pinterest
+              {isConnected ? 'Load Pinterest Pins' : 'Connect Pinterest'}
             </span>
           </button>
 
@@ -211,7 +257,7 @@ export default function InspoPage({ onBack }: Props) {
             gridTemplateColumns: 'repeat(2, 1fr)',
             gap: '12px'
           }}>
-            {DEMO_IMAGES.map((img, idx) => (
+            {mode === 'demo' && DEMO_IMAGES.map((img, idx) => (
               <div
                 key={idx}
                 style={{
@@ -236,6 +282,59 @@ export default function InspoPage({ onBack }: Props) {
                 />
               </div>
             ))}
+            {mode === 'pinterest' && pinterestPins.length > 0 && pinterestPins.map((pin) => (
+              <div
+                key={pin.id}
+                style={{
+                  aspectRatio: '1',
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  boxShadow: '0 2px 8px var(--shadow)',
+                  cursor: 'pointer',
+                  transition: 'transform 0.2s',
+                  position: 'relative'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+              >
+                <img
+                  src={pin.image_url}
+                  alt={pin.title || 'Pinterest pin'}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover'
+                  }}
+                />
+                {pin.title && (
+                  <div style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    padding: '8px',
+                    background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
+                    color: '#fff',
+                    fontSize: '0.8em',
+                    fontFamily: "'Dancing Script', cursive"
+                  }}>
+                    {pin.title}
+                  </div>
+                )}
+              </div>
+            ))}
+            {mode === 'pinterest' && pinterestPins.length === 0 && (
+              <div style={{
+                gridColumn: '1 / -1',
+                textAlign: 'center',
+                padding: '40px',
+                fontFamily: "'Dancing Script', cursive",
+                fontSize: '1.2em',
+                color: 'var(--text)'
+              }}>
+                No pins found. Try saving some pins on Pinterest first!
+              </div>
+            )}
           </div>
         </div>
       )}
