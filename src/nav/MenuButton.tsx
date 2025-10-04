@@ -3,10 +3,11 @@ import React, { useRef, useState } from 'react'
 type Props = {
   onClick: () => void
   onInspoClick?: () => void
+  onMusicClick?: () => void
 }
 
-export default function MenuButton({ onClick, onInspoClick }: Props) {
-  const props = { onInspoClick };
+export default function MenuButton({ onClick, onInspoClick, onMusicClick }: Props) {
+  const props = { onInspoClick, onMusicClick };
   const btnRef = useRef<HTMLButtonElement>(null)
   const [showNav, setShowNav] = useState(false)
 
@@ -55,6 +56,7 @@ export default function MenuButton({ onClick, onInspoClick }: Props) {
         >
           <div onClick={() => { handleNavClick(); onClick(); }} style={{ padding: '10px 0', textAlign: 'left' }}>Set Goals</div>
           <div onClick={() => { handleNavClick(); if (props.onInspoClick) props.onInspoClick(); }} style={{ padding: '10px 0', textAlign: 'left' }}>Inspo</div>
+          <div onClick={() => { handleNavClick(); if (props.onMusicClick) props.onMusicClick(); }} style={{ padding: '10px 0', textAlign: 'left' }}>Music</div>
         </nav>
       )}
     </>
