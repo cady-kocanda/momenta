@@ -29,7 +29,14 @@ export default function App() {
         <InspoPage onBack={() => setCurrentPage('home')} />
       )}
       {currentPage === 'music' && (
-        <MusicPage onBack={() => setCurrentPage('home')} />
+        <>
+          <MenuButton
+            onClick={() => setCurrentPage('goals')}
+            onInspoClick={() => setCurrentPage('inspo')}
+            onMusicClick={() => setCurrentPage('music')}
+          />
+          <MusicPage onBack={() => setCurrentPage('home')} />
+        </>
       )}
     </div>
   )
