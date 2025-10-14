@@ -1,13 +1,8 @@
 import React, { useRef, useState } from 'react'
+import { useNavigation } from '../contexts/NavigationContext'
 
-type Props = {
-  onClick: () => void
-  onInspoClick?: () => void
-  onMusicClick?: () => void
-}
-
-export default function MenuButton({ onClick, onInspoClick, onMusicClick }: Props) {
-  const props = { onInspoClick, onMusicClick };
+export default function MenuButton() {
+  const { navigateToHome, navigateToGoals, navigateToInspo, navigateToMusic } = useNavigation()
   const btnRef = useRef<HTMLButtonElement>(null)
   const [showNav, setShowNav] = useState(false)
 
@@ -24,15 +19,15 @@ export default function MenuButton({ onClick, onInspoClick, onMusicClick }: Prop
     setShowNav(v => !v)
   }
 
-  const handleNavClick = () => {
+  const handleNavClick = (callback: () => void) => {
     setShowNav(false)
-    onClick()
+    callback()
   }
 
   return (
     <>
-      <button ref={btnRef} className="menu-btn" title="Goals" onClick={handleClick}>
-        <img src="/images/ButtonMenu.png" alt="Goals menu" />
+      <button ref={btnRef} className="menu-btn" title="Menu" onClick={handleClick}>
+        <img src="/images/ButtonMenu.png" alt="Menu" />
       </button>
       {showNav && (
         <nav
@@ -54,9 +49,10 @@ export default function MenuButton({ onClick, onInspoClick, onMusicClick }: Prop
             transition: 'opacity 0.2s',
           }}
         >
-          <div onClick={() => { handleNavClick(); onClick(); }} style={{ padding: '10px 0', textAlign: 'left' }}>Set Goals</div>
-          <div onClick={() => { handleNavClick(); if (props.onInspoClick) props.onInspoClick(); }} style={{ padding: '10px 0', textAlign: 'left' }}>Inspo</div>
-          <div onClick={() => { handleNavClick(); if (props.onMusicClick) props.onMusicClick(); }} style={{ padding: '10px 0', textAlign: 'left' }}>Music</div>
+          <div onClick={() => handleNavClick(navigateToHome)} style={{ padding: '10px 0', textAlign: 'left' }}>Home</div>
+          <div onClick={() => handleNavClick(navigateToGoals)} style={{ padding: '10px 0', textAlign: 'left' }}>Set Goals</div>
+          <div onClick={() => handleNavClick(navigateToInspo)} style={{ padding: '10px 0', textAlign: 'left' }}>Inspo</div>
+          <div onClick={() => handleNavClick(navigateToMusic)} style={{ padding: '10px 0', textAlign: 'left' }}>Music</div>
         </nav>
       )}
     </>

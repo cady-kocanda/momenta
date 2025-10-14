@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
-
-type Props = {
-  onBack: () => void
-}
+import Menu from '../components/Menu'
 
 type Goal = {
   id: string
@@ -22,7 +19,7 @@ type TodoItem = {
   is_completed: boolean
 }
 
-export default function GoalsPage({ onBack }: Props) {
+export default function GoalsPage() {
   const [goals, setGoals] = useState<Goal[]>([])
   const [todoLists, setTodoLists] = useState<TodoList[]>([])
   const [newGoal, setNewGoal] = useState('')
@@ -106,10 +103,7 @@ export default function GoalsPage({ onBack }: Props) {
 
   return (
     <div className="goals-page">
-      <button className="back-btn" onClick={onBack}>
-        <img src="/images/ButtonMenu.png" alt="Back" />
-      </button>
-
+      <Menu />
       <div className="goals-container">
         <div className="page-header">
           <img src="/images/star.png" alt="Star" className="header-icon" />

@@ -1,43 +1,41 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { NavigationProvider, useNavigation } from './contexts/NavigationContext'
 import MenuButton from './nav/MenuButton'
 import GoalsPage from './pages/GoalsPage'
 import InspoPage from './pages/InspoPage'
 import MusicPage from './pages/MusicPage'
 
-export default function App() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'goals' | 'inspo' | 'music'>('home')
+function AppContent() {
+  const { currentPage } = useNavigation()
 
   return (
     <div id="app" className="app-root">
+      {/* MenuButton - always present, handles all navigation logic internally */}
+      <MenuButton />
+
       {currentPage === 'home' && (
-        <>
-          <MenuButton
-            onClick={() => setCurrentPage('goals')}
-            onInspoClick={() => setCurrentPage('inspo')}
-            onMusicClick={() => setCurrentPage('music')}
-          />
-          <div className="home-wrap">
-            <img src="/images/Home.png" alt="Home" className="home-img" />
-            <div className="home-overlay">welcome</div>
-          </div>
-        </>
+        <div className="home-wrap">
+          <img src="/images/Home.png" alt="Home" className="home-img" />
+          <div className="home-overlay">welcome</div>
+        </div>
       )}
       {currentPage === 'goals' && (
-        <GoalsPage onBack={() => setCurrentPage('home')} />
+        <GoalsPage />
       )}
       {currentPage === 'inspo' && (
-        <InspoPage onBack={() => setCurrentPage('home')} />
+        <InspoPage />
       )}
       {currentPage === 'music' && (
-        <>
-          <MenuButton
-            onClick={() => setCurrentPage('goals')}
-            onInspoClick={() => setCurrentPage('inspo')}
-            onMusicClick={() => setCurrentPage('music')}
-          />
-          <MusicPage onBack={() => setCurrentPage('home')} />
-        </>
+        <MusicPage />
       )}
     </div>
+  )
+}
+
+export default function App() {
+  return (
+    <NavigationProvider>
+      <AppContent />
+    </NavigationProvider>
   )
 }
