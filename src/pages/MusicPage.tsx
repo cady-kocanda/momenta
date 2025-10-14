@@ -38,108 +38,44 @@ export default function MusicPage({ onBack }: Props) {
       position: 'relative'
     }}>
 
-      {/* Main Content */}
+      {/* Top Half - Main Visual Elements */}
       <div style={{
-        flex: 1,
+        height: '50%',
+        position: 'relative',
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '0',
-        position: 'relative',
         overflow: 'hidden'
       }}>
-        {/* Decorative Music Notes */}
-        <img 
-          src="/images/music.png" 
-          alt="Music note" 
-          style={{
-            position: 'absolute',
-            top: '8%',
-            left: '8%',
-            width: '35px',
-            height: '35px',
-            opacity: 0.6,
-            transform: 'rotate(-15deg)',
-            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
-            transition: 'transform 0.3s ease'
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.transform = 'rotate(-15deg) scale(1.1)'}
-          onMouseLeave={(e) => e.currentTarget.style.transform = 'rotate(-15deg) scale(1)'}
-        />
-        <img 
-          src="/images/music2.png" 
-          alt="Music note" 
-          style={{
-            position: 'absolute',
-            top: '12%',
-            right: '12%',
-            width: '30px',
-            height: '30px',
-            opacity: 0.5,
-            transform: 'rotate(20deg)',
-            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
-            transition: 'transform 0.3s ease'
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.transform = 'rotate(20deg) scale(1.1)'}
-          onMouseLeave={(e) => e.currentTarget.style.transform = 'rotate(20deg) scale(1)'}
-        />
-        <img 
-          src="/images/music.png" 
-          alt="Music note" 
-          style={{
-            position: 'absolute',
-            top: '25%',
-            left: '3%',
-            width: '25px',
-            height: '25px',
-            opacity: 0.4,
-            transform: 'rotate(45deg)',
-            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
-            transition: 'transform 0.3s ease'
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.transform = 'rotate(45deg) scale(1.1)'}
-          onMouseLeave={(e) => e.currentTarget.style.transform = 'rotate(45deg) scale(1)'}
-        />
-        <img 
-          src="/images/music2.png" 
-          alt="Music note" 
-          style={{
-            position: 'absolute',
-            top: '30%',
-            right: '3%',
-            width: '28px',
-            height: '28px',
-            opacity: 0.4,
-            transform: 'rotate(-30deg)',
-            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
-            transition: 'transform 0.3s ease'
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.transform = 'rotate(-30deg) scale(1.1)'}
-          onMouseLeave={(e) => e.currentTarget.style.transform = 'rotate(-30deg) scale(1)'}
-        />
-
         {/* Kitty Character */}
         <img 
           src="/images/kitty.png" 
           alt="Kitty with headphones" 
           style={{
             position: 'absolute',
-            left: '-30%',
-            bottom: '15%',
-            width: '360px',
-            height: '360px',
+            left: '40%',
+            bottom: '12%',
+            width: '380px',
+            height: '380px',
             objectFit: 'contain',
             zIndex: 3,
-            filter: 'drop-shadow(0 6px 16px rgba(0,0,0,0.25))',
+            filter: 'drop-shadow(0 8px 20px rgba(0,0,0,0.3))',
             transition: 'all 0.3s ease'
           }}
-        
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.05)'
+            e.currentTarget.style.filter = 'drop-shadow(0 10px 25px rgba(0,0,0,0.4))'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1)'
+            e.currentTarget.style.filter = 'drop-shadow(0 8px 20px rgba(0,0,0,0.3))'
+          }}
         />
+
         {/* Large Cassette Tape Background */}
         <div style={{
           position: 'absolute',
-          top: '50%',
+          top: '70%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
           zIndex: 1
@@ -148,53 +84,254 @@ export default function MusicPage({ onBack }: Props) {
             src="/images/blacktape.png" 
             alt="Cassette tape" 
             style={{
-              width: '420px',
+              width: '380px',
               height: 'auto',
-              filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.15))',
-              opacity: 0.7
+              opacity: 0.8
             }}
           />
+          {/* Playlist Label Text */}
+          <div style={{
+            position: 'absolute',
+            top: '60px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            background: 'transparent',
+            color: '#333',
+            fontFamily: "'Dancing Script', cursive",
+            fontSize: '1.7em',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            padding: '2px 4px',
+            zIndex: 2,
+            textShadow: '0 2px 4px rgba(255,255,255,0.9)'
+          }}>
+            if i were a playlist
+          </div>
+        </div>
+
       </div>
 
-        {/* Spotify Integration */}
+      {/* Bottom Half - Spotify Interface */}
+      <div style={{
+        height: '50%',
+        background: 'var(--bg)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '20px',
+        position: 'relative'
+      }}>
+        {/* Floating Spotify Interface Container */}
         <div style={{
-          position: 'absolute',
-          right: '5%',
-          bottom: '12%',
+          background: '#191414',
+          borderRadius: '20px',
+          padding: '10px',
+          maxWidth: '500px',
+          width: '100%',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
-          gap: '12px'
+          position: 'relative',
+          boxShadow: '0 15px 35px rgba(0,0,0,0.3)',
+          border: '1px solid rgba(255,255,255,0.1)'
         }}>
-          <img 
-            src="/images/Record2.png" 
-            alt="Vinyl record" 
-            style={{
-              width: '100px',
-              height: '100px',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.1) rotate(5deg)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1) rotate(0deg)'
-            }}
-          />
+          {/* Top Section - Album Cover and Track List */}
           <div style={{
-            color: '#333',
-            fontSize: '0.9em',
-            textAlign: 'center',
-            padding: '6px 12px',
-            fontWeight: 'bold',
-            fontFamily: "'Dancing Script', cursive"
+            display: 'flex',
+            gap: '20px',
+            marginBottom: '20px',
+            flex: 1
           }}>
-            tap for my spotify
+            {/* Album Cover Area */}
+            <div style={{
+              width: '120px',
+              height: '120px',
+              background: '#282828',
+              borderRadius: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#b3b3b3',
+              fontSize: '0.9em'
+            }}>
+              {/* Empty album cover */}
+            </div>
+
+            {/* Track List Area */}
+            <div style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px'
+            }}>
+              {/* Spotify Logo */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                marginBottom: '10px'
+              }}>
+                <div style={{
+                  width: '24px',
+                  height: '24px',
+                  background: '#1db954',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'white',
+                  fontSize: '12px',
+                  fontWeight: 'bold'
+                }}>
+                  ♪
+                </div>
+              </div>
+
+              {/* Empty Track List */}
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '6px'
+              }}>
+                {/* Empty track rows */}
+                {[1, 2, 3].map((_, index) => (
+                  <div key={index} style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '4px 0',
+                    color: '#b3b3b3',
+                    fontSize: '0.9em'
+                  }}>
+                    <div style={{
+                      width: '16px',
+                      height: '16px',
+                      background: '#404040',
+                      borderRadius: '2px'
+                    }} />
+                    <div style={{
+                      flex: 1,
+                      height: '12px',
+                      background: '#404040',
+                      borderRadius: '2px'
+                    }} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Section - Playlist Info and Controls */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end'
+          }}>
+            {/* Left - Playlist Info */}
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px'
+            }}>
+              {/* Playlist Title */}
+              <div style={{
+                height: '16px',
+                width: '200px',
+                background: '#404040',
+                borderRadius: '2px'
+              }} />
+              
+              {/* Preview Button */}
+              <div style={{
+                height: '32px',
+                width: '80px',
+                background: '#404040',
+                borderRadius: '16px'
+              }} />
+            </div>
+
+            {/* Right - Playback Controls */}
+            <div style={{
+              display: 'flex',
+              gap: '3px',
+              alignItems: 'center'
+            }}>
+              {/* Previous Track */}
+              <div style={{
+                width: '32px',
+                height: '32px',
+                background: '#404040',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#b3b3b3',
+                fontSize: '12px'
+              }}>
+                ⏮
+              </div>
+
+              {/* Next Track */}
+              <div style={{
+                width: '32px',
+                height: '32px',
+                background: '#404040',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#b3b3b3',
+                fontSize: '12px'
+              }}>
+                ⏭
+              </div>
+
+              {/* Add to Playlist */}
+              <div style={{
+                width: '32px',
+                height: '32px',
+                background: '#404040',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#b3b3b3',
+                fontSize: '12px'
+              }}>
+                +
+              </div>
+
+              {/* More Options */}
+              <div style={{
+                width: '32px',
+                height: '32px',
+                background: '#404040',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#b3b3b3',
+                fontSize: '12px'
+              }}>
+                ⋯
+              </div>
+
+              {/* Play Button */}
+              <div style={{
+                width: '40px',
+                height: '40px',
+                background: '#1db954',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                fontSize: '14px'
+              }}>
+                ▶
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   )
 }
-    
