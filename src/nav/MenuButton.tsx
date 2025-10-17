@@ -76,7 +76,7 @@ export default function MenuButton() {
                   borderRadius: '20px',
                   border: '2px solid #333',
                   background: 'transparent',
-                  fontSize: '16px',
+                  fontSize: '20px',
                   color: '#333',
                   cursor: 'pointer',
                   textAlign: 'center',

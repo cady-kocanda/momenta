@@ -226,7 +226,7 @@ export default function CalendarPage() {
             <h2 style={{
               margin: '0 0 16px 0',
               color: 'white',
-              fontSize: '24px',
+              fontSize: '32px',
               fontWeight: '600',
               fontFamily: "'LiebeHeide', 'Caveat', cursive"
             }}>
@@ -250,7 +250,7 @@ export default function CalendarPage() {
                 marginRight: '8px',
                 fontSize: '16px'
               }}>
-                📅
+                
               </span>
               <input
                 type="text"

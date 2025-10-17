@@ -169,7 +169,7 @@ export default function InspoPage() {
       }}>
         <h1 style={{
           fontFamily: "'LiebeHeide', 'Caveat', cursive",
-          fontSize: '1.8em',
+          fontSize: '2.4em',
           margin: 0,
           color: 'var(--text)'
         }}>
@@ -203,7 +203,7 @@ export default function InspoPage() {
         }}>
           <h2 style={{
             fontFamily: "'LiebeHeide', 'Caveat', cursive",
-            fontSize: '1.5em',
+            fontSize: '2.0em',
             color: 'var(--text)',
             textAlign: 'center',
             marginBottom: '20px'

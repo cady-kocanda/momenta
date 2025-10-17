@@ -101,7 +101,7 @@ export default function MusicPage() {
             background: 'transparent',
             color: '#333',
             fontFamily: "'LiebeHeide', 'Caveat', cursive",
-            fontSize: '1.7em',
+            fontSize: '2.2em',
             fontWeight: 'bold',
             textAlign: 'center',
             padding: '2px 4px',

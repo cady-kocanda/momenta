@@ -73,7 +73,7 @@ export default function EventModal({ isOpen, onClose, selectedDate }: EventModal
         }}>
           <h2 style={{
             margin: 0,
-            fontSize: '20px',
+            fontSize: '28px',
             fontWeight: '600',
             color: 'var(--text-dark)',
             fontFamily: "'LiebeHeide', 'Caveat', cursive"
@@ -125,7 +125,7 @@ export default function EventModal({ isOpen, onClose, selectedDate }: EventModal
                 background: selectedType === type ? 'var(--accent)' : 'var(--border)',
                 color: selectedType === type ? 'white' : 'var(--text-dark)',
                 fontSize: '14px',
-                fontFamily: "'Great Vibes', cursive",
+                fontFamily: "'Poppins', sans-serif",
                 cursor: 'pointer',
                 transition: 'all 0.2s',
                 textTransform: 'capitalize'
@@ -151,7 +151,7 @@ export default function EventModal({ isOpen, onClose, selectedDate }: EventModal
               <div style={{
                 fontSize: '48px',
                 marginBottom: '16px'
-              }}>📅</div>
+              }}></div>
               <p style={{
                 margin: 0,
                 fontFamily: "'Poppins', sans-serif",
@@ -294,7 +294,6 @@ export default function EventModal({ isOpen, onClose, selectedDate }: EventModal
               e.currentTarget.style.transform = 'scale(1)'
             }}
           >
-            <span>📝</span>
             Add
           </button>
         </div>
