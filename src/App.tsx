@@ -4,6 +4,7 @@ import MenuButton from './nav/MenuButton'
 import GoalsPage from './pages/GoalsPage'
 import InspoPage from './pages/InspoPage'
 import MusicPage from './pages/MusicPage'
+import CalendarPage from './pages/CalendarPage'
 
 function AppContent() {
   const { currentPage } = useNavigation()
@@ -27,6 +28,9 @@ function AppContent() {
       )}
       {currentPage === 'music' && (
         <MusicPage />
+      )}
+      {currentPage === 'calendar' && (
+        <CalendarPage />
       )}
     </div>
   )

@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { useNavigation } from '../contexts/NavigationContext'
 
 export default function MenuButton() {
-  const { navigateToHome, navigateToGoals, navigateToInspo, navigateToMusic } = useNavigation()
+  const { navigateToHome, navigateToGoals, navigateToInspo, navigateToMusic, navigateToCalendar } = useNavigation()
   const btnRef = useRef<HTMLButtonElement>(null)
   const [showNav, setShowNav] = useState(false)
 
@@ -53,6 +53,7 @@ export default function MenuButton() {
           <div onClick={() => handleNavClick(navigateToGoals)} style={{ padding: '10px 0', textAlign: 'left' }}>Set Goals</div>
           <div onClick={() => handleNavClick(navigateToInspo)} style={{ padding: '10px 0', textAlign: 'left' }}>Inspo</div>
           <div onClick={() => handleNavClick(navigateToMusic)} style={{ padding: '10px 0', textAlign: 'left' }}>Music</div>
+          <div onClick={() => handleNavClick(navigateToCalendar)} style={{ padding: '10px 0', textAlign: 'left' }}>Calendar</div>
         </nav>
       )}
     </>
