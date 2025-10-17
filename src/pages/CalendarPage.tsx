@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import Menu from '../components/Menu'
+import EventModal from '../components/EventModal'
+import { useGoals } from '../contexts/GoalsContext'
 
 interface CalendarEvent {
   id: string
@@ -9,13 +11,11 @@ interface CalendarEvent {
 }
 
 export default function CalendarPage() {
+  const { getTasksForDate } = useGoals()
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [inputDate, setInputDate] = useState('')
-  const [events] = useState<CalendarEvent[]>([
-    { id: '1', date: '2024-12-26', title: 'Holiday Event', color: '#ff96c4' },
-    { id: '2', date: '2024-12-24', title: 'Christmas Eve', color: '#96d4ff' }
-  ])
+  const [showModal, setShowModal] = useState(false)
 
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -51,13 +51,14 @@ export default function CalendarPage() {
     for (let day = 1; day <= daysInMonth; day++) {
       const dayDate = new Date(year, month, day)
       const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+      const tasksForDay = getTasksForDate(dateString)
       
       days.push({
         date: day,
         isCurrentMonth: true,
         isToday: dayDate.toDateString() === today.toDateString(),
         isSelected: selectedDate?.toDateString() === dayDate.toDateString(),
-        hasEvent: events.some(event => event.date === dateString)
+        hasEvent: tasksForDay.length > 0
       })
     }
 
@@ -97,6 +98,7 @@ export default function CalendarPage() {
         day: 'numeric', 
         year: 'numeric' 
       }))
+      setShowModal(true)
     }
   }
 
@@ -127,6 +129,7 @@ export default function CalendarPage() {
       day: 'numeric', 
       year: 'numeric' 
     }))
+    setShowModal(true)
   }
 
   const days = getDaysInMonth(currentDate)
@@ -393,6 +396,13 @@ export default function CalendarPage() {
           </div>
         </div>
       </div>
+
+      {/* Event Modal */}
+      <EventModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        selectedDate={selectedDate}
+      />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavigationProvider, useNavigation } from './contexts/NavigationContext'
+import { GoalsProvider } from './contexts/GoalsContext'
 import MenuButton from './nav/MenuButton'
 import GoalsPage from './pages/GoalsPage'
 import InspoPage from './pages/InspoPage'
@@ -38,8 +39,10 @@ function AppContent() {
 
 export default function App() {
   return (
-    <NavigationProvider>
-      <AppContent />
-    </NavigationProvider>
+    <GoalsProvider>
+      <NavigationProvider>
+        <AppContent />
+      </NavigationProvider>
+    </GoalsProvider>
   )
 }
