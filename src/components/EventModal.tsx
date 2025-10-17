@@ -10,7 +10,7 @@ interface EventModalProps {
 type TaskType = 'event' | 'task' | 'out-of-office'
 
 export default function EventModal({ isOpen, onClose, selectedDate }: EventModalProps) {
-  const { getTasksForDate, toggleDailyTask, addCustomTask, deleteDailyTask } = useGoals()
+  const { getTasksForDate, getTodoTasksForDate, toggleDailyTask, addCustomTask, deleteDailyTask, toggleTodoItemById } = useGoals()
   const [selectedType, setSelectedType] = useState<TaskType>('task')
   const [newTaskTitle, setNewTaskTitle] = useState('')
 
@@ -18,6 +18,7 @@ export default function EventModal({ isOpen, onClose, selectedDate }: EventModal
 
   const dateString = selectedDate.toISOString().split('T')[0]
   const tasks = getTasksForDate(dateString)
+  const todoTasks = getTodoTasksForDate(dateString)
   const formattedDate = selectedDate.toLocaleDateString('en-US', { 
     weekday: 'long', 
     year: 'numeric', 
@@ -142,7 +143,7 @@ export default function EventModal({ isOpen, onClose, selectedDate }: EventModal
           overflowY: 'auto',
           padding: '0 24px'
         }}>
-          {tasks.length === 0 ? (
+          {tasks.length === 0 && todoTasks.length === 0 ? (
             <div style={{
               textAlign: 'center',
               padding: '40px 20px',
@@ -162,6 +163,7 @@ export default function EventModal({ isOpen, onClose, selectedDate }: EventModal
             </div>
           ) : (
             <div style={{ paddingBottom: '16px' }}>
+              {/* Daily Tasks */}
               {tasks.map((task) => (
                 <div
                   key={task.id}
@@ -233,6 +235,66 @@ export default function EventModal({ isOpen, onClose, selectedDate }: EventModal
                   )}
                 </div>
               ))}
+              
+              {/* Todo List Tasks */}
+              {todoTasks.length > 0 && (
+                <div style={{ 
+                  marginTop: tasks.length > 0 ? '24px' : '0',
+                  paddingTop: tasks.length > 0 ? '24px' : '0',
+                  borderTop: tasks.length > 0 ? '1px solid var(--border)' : 'none'
+                }}>
+                  <h3 style={{
+                    margin: '0 0 16px 0',
+                    fontSize: '18px',
+                    fontWeight: '600',
+                    color: 'var(--text-dark)',
+                    fontFamily: "'Poppins', sans-serif"
+                  }}>
+                    📝 To-Do Items
+                  </h3>
+                  {todoTasks.map((todoItem, index) => (
+                    <div
+                      key={`todo-${index}`}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        padding: '12px 0',
+                        borderBottom: index < todoTasks.length - 1 ? '1px solid var(--border)' : 'none'
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={todoItem.is_completed}
+                        onChange={() => toggleTodoItemById(todoItem.id)}
+                        style={{
+                          width: '20px',
+                          height: '20px',
+                          cursor: 'pointer',
+                          accentColor: 'var(--accent)'
+                        }}
+                      />
+                      <div style={{ flex: 1 }}>
+                        <span style={{
+                          fontFamily: "'Poppins', sans-serif",
+                          fontSize: '16px',
+                          color: todoItem.is_completed ? 'var(--text-light)' : 'var(--text-dark)',
+                          textDecoration: todoItem.is_completed ? 'line-through' : 'none'
+                        }}>
+                          {todoItem.text}
+                        </span>
+                        <div style={{
+                          fontSize: '12px',
+                          color: 'var(--text-light)',
+                          marginTop: '2px'
+                        }}>
+                          From to-do list
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>

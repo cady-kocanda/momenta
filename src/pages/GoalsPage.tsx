@@ -19,6 +19,7 @@ export default function GoalsPage() {
   const [newGoal, setNewGoal] = useState('')
   const [newListName, setNewListName] = useState('')
   const [newItemText, setNewItemText] = useState<{ [listId: string]: string }>({})
+  const [newItemDueDate, setNewItemDueDate] = useState<{ [listId: string]: string }>({})
 
   const handleAddGoal = () => {
     addGoal(newGoal)
@@ -33,8 +34,10 @@ export default function GoalsPage() {
   const handleAddTodoItem = (listId: string) => {
     const text = newItemText[listId]?.trim()
     if (text) {
-      addTodoItem(listId, text)
+      const dueDate = newItemDueDate[listId] || undefined
+      addTodoItem(listId, text, dueDate)
       setNewItemText({ ...newItemText, [listId]: '' })
+      setNewItemDueDate({ ...newItemDueDate, [listId]: '' })
     }
   }
 
@@ -140,7 +143,17 @@ export default function GoalsPage() {
                         onChange={() => toggleTodoItem(list.id, item.id)}
                         className="checkbox"
                       />
-                      <span className={item.is_completed ? 'completed' : ''}>{item.text}</span>
+                      <div className="item-content">
+                        <span className={item.is_completed ? 'completed' : ''}>{item.text}</span>
+                        {item.dueDate && (
+                          <span className={`due-date ${item.is_completed ? 'completed' : ''}`}>
+                            📅 {new Date(item.dueDate).toLocaleDateString('en-US', { 
+                              month: 'short', 
+                              day: 'numeric' 
+                            })}
+                          </span>
+                        )}
+                      </div>
                       <button onClick={() => deleteTodoItem(list.id, item.id)} className="delete-btn-small">×</button>
                     </div>
                   ))}
@@ -154,6 +167,13 @@ export default function GoalsPage() {
                     onKeyPress={(e) => e.key === 'Enter' && handleAddTodoItem(list.id)}
                     placeholder="Add item..."
                     className="item-input"
+                  />
+                  <input
+                    type="date"
+                    value={newItemDueDate[list.id] || ''}
+                    onChange={(e) => setNewItemDueDate({ ...newItemDueDate, [list.id]: e.target.value })}
+                    className="date-input"
+                    title="Set due date (optional)"
                   />
                   <button onClick={() => handleAddTodoItem(list.id)} className="add-btn-small">+</button>
                 </div>

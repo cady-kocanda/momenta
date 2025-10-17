@@ -474,6 +474,32 @@ body { font-family: var(--body-font); display:flex; align-items:center; justify-
   word-break: break-word;
 }
 
+.item-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.item-content span {
+  font-family: var(--body-font);
+  font-size: 18px;
+  color: var(--text-dark);
+  word-break: break-word;
+}
+
+.due-date {
+  font-size: 14px !important;
+  color: var(--accent) !important;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.due-date.completed {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
 .list-item span.completed {
   text-decoration: line-through;
   opacity: 0.5;
@@ -512,15 +538,31 @@ body { font-family: var(--body-font); display:flex; align-items:center; justify-
 .item-input {
   flex: 1;
   min-width: 0;
-  max-width: calc(100% - 60px);
   padding: 8px 12px;
   border: 2px solid var(--border);
   border-radius: 10px;
   font-family: var(--body-font);
   font-size: 16px;
   background: rgba(255, 255, 255, 0.8);
+}
+
+.date-input {
+  min-width: 120px;
+  padding: 8px 12px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-family: var(--body-font);
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.8);
   color: var(--text-dark);
+  cursor: pointer;
   transition: all 0.2s;
+}
+
+.date-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: white;
 }
 
 .item-input:focus {
