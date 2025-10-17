@@ -16,6 +16,7 @@ type TodoItem = {
   id: string
   text: string
   is_completed: boolean
+  dueDate?: string
 }
 
 type DailyTask = {
@@ -35,11 +36,13 @@ interface GoalsContextType {
   updateGoalProgress: (id: string, progress: number) => void
   deleteGoal: (id: string) => void
   addTodoList: (title: string) => void
-  addTodoItem: (listId: string, text: string) => void
+  addTodoItem: (listId: string, text: string, dueDate?: string) => void
   toggleTodoItem: (listId: string, itemId: string) => void
   deleteTodoItem: (listId: string, itemId: string) => void
   deleteTodoList: (id: string) => void
   getTasksForDate: (date: string) => DailyTask[]
+  getTodoTasksForDate: (date: string) => TodoItem[]
+  toggleTodoItemById: (itemId: string) => void
   toggleDailyTask: (taskId: string) => void
   addCustomTask: (date: string, title: string) => void
   deleteDailyTask: (taskId: string) => void
@@ -104,12 +107,13 @@ export function GoalsProvider({ children }: GoalsProviderProps) {
     setTodoLists(prev => [list, ...prev])
   }
 
-  const addTodoItem = (listId: string, text: string) => {
+  const addTodoItem = (listId: string, text: string, dueDate?: string) => {
     if (!text.trim()) return
     const newItem: TodoItem = {
       id: Date.now().toString(),
       text: text.trim(),
-      is_completed: false
+      is_completed: false,
+      dueDate
     }
     setTodoLists(prev => prev.map(list => 
       list.id === listId 
@@ -149,6 +153,33 @@ export function GoalsProvider({ children }: GoalsProviderProps) {
     return dailyTasks.filter(task => task.date === date)
   }
 
+  const getTodoTasksForDate = (date: string): TodoItem[] => {
+    const tasks: TodoItem[] = []
+    todoLists.forEach(list => {
+      list.items.forEach(item => {
+        if (item.dueDate === date) {
+          tasks.push(item)
+        }
+      })
+    })
+    return tasks
+  }
+
+  const toggleTodoItemById = (itemId: string) => {
+    setTodoLists(prev => prev.map(list => {
+      const hasItem = list.items.some(item => item.id === itemId)
+      if (hasItem) {
+        return {
+          ...list,
+          items: list.items.map(item =>
+            item.id === itemId ? { ...item, is_completed: !item.is_completed } : item
+          )
+        }
+      }
+      return list
+    }))
+  }
+
   const toggleDailyTask = (taskId: string) => {
     setDailyTasks(prev => prev.map(task => 
       task.id === taskId ? { ...task, is_completed: !task.is_completed } : task
@@ -185,6 +216,8 @@ export function GoalsProvider({ children }: GoalsProviderProps) {
     deleteTodoItem,
     deleteTodoList,
     getTasksForDate,
+    getTodoTasksForDate,
+    toggleTodoItemById,
     toggleDailyTask,
     addCustomTask,
     deleteDailyTask

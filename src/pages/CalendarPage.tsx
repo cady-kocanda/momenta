@@ -11,7 +11,7 @@ interface CalendarEvent {
 }
 
 export default function CalendarPage() {
-  const { getTasksForDate } = useGoals()
+  const { getTasksForDate, getTodoTasksForDate } = useGoals()
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [inputDate, setInputDate] = useState('')
@@ -52,13 +52,15 @@ export default function CalendarPage() {
       const dayDate = new Date(year, month, day)
       const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
       const tasksForDay = getTasksForDate(dateString)
+      const todoTasksForDay = getTodoTasksForDate(dateString)
+      const totalTasksForDay = tasksForDay.length + todoTasksForDay.length
       
       days.push({
         date: day,
         isCurrentMonth: true,
         isToday: dayDate.toDateString() === today.toDateString(),
         isSelected: selectedDate?.toDateString() === dayDate.toDateString(),
-        hasEvent: tasksForDay.length > 0
+        hasEvent: totalTasksForDay > 0
       })
     }
 
