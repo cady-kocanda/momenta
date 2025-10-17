@@ -39,7 +39,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Add only the home.png image centered
   const homeImg = document.createElement('img');
-  homeImg.src = '/images/Home.png';
+  homeImg.src = '/images/Homepage.png';
   homeImg.alt = 'Home';
   homeImg.className = 'home-img';
   app.appendChild(homeImg);
