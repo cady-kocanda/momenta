@@ -82,41 +82,44 @@ export default function MenuButton() {
           <nav
             style={{
               position: 'absolute',
-              top: 60,
+              top: 22,
               left: 20,
               display: 'flex',
               flexDirection: 'column',
-              gap: '16px',
+              alignItems: 'flex-start',
+              gap: 10,
               padding: 0,
               background: 'transparent',
-              borderRadius: 0,
-              boxShadow: 'none',
-              backdropFilter: 'none',
               border: 'none',
-              zIndex: 20,
-              minWidth: '140px',
-              transition: 'all 0.3s ease'
+              zIndex: 20
             }}
           >
-            {[
-              { label: 'Home', action: navigateToHome },
-              { label: 'Goals', action: navigateToGoals },
-              { label: 'Inspo', action: navigateToInspo },
-              { label: 'Music', action: navigateToMusic },
-              { label: 'Calendar', action: navigateToCalendar }
-            ].map((item, index) => (
-              <div
-                key={item.label}
-                onClick={() => handleNavClick(item.action)}
-                className="nav-item"
-                style={{
-                  fontSize: '20px',
-                  overflow: 'visible'
-                }}
-              >
-                {item.label}
-              </div>
-            ))}
+            {/* First row, offset to the right of the button */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 22, marginLeft: 52 }}>
+              {[{ label: 'Home', action: navigateToHome }, { label: 'Goals', action: navigateToGoals }, { label: 'Inspo', action: navigateToInspo }].map((item, i) => (
+                <div
+                  key={item.label}
+                  onClick={() => handleNavClick(item.action)}
+                  className="nav-item"
+                  style={{ fontSize: '20px', transform: `translateY(${[0, -2, 1][i]}px) skewX(${[-1, 0.5, -0.5][i]}deg)` }}
+                >
+                  {item.label}
+                </div>
+              ))}
+            </div>
+            {/* Second row starts below the button at the left-hand side */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 24, marginLeft: 0 }}>
+              {[{ label: 'Music', action: navigateToMusic }, { label: 'Calendar', action: navigateToCalendar }].map((item, i) => (
+                <div
+                  key={item.label}
+                  onClick={() => handleNavClick(item.action)}
+                  className="nav-item"
+                  style={{ fontSize: '20px', transform: `translateY(${[1, -1][i]}px) skewX(${[0.5, -0.2][i]}deg)` }}
+                >
+                  {item.label}
+                </div>
+              ))}
+            </div>
           </nav>
         </>
       )}
