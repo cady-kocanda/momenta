@@ -18,7 +18,7 @@ function AppContent() {
       {currentPage === 'home' && (
         <div className="home-wrap">
           <img src="/images/Home.png" alt="Home" className="home-img" />
-          <div className="home-overlay">welcome</div>
+          <div className="home-overlay" style={{ fontFamily: "'LiebeHeide', 'Caveat', cursive" }}>welcome</div>
         </div>
       )}
       {currentPage === 'goals' && (

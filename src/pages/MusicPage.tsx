@@ -100,7 +100,7 @@ export default function MusicPage() {
             transform: 'translateX(-50%)',
             background: 'transparent',
             color: '#333',
-            fontFamily: "'Dancing Script', cursive",
+            fontFamily: "'LiebeHeide', 'Caveat', cursive",
             fontSize: '1.7em',
             fontWeight: 'bold',
             textAlign: 'center',
@@ -149,7 +149,7 @@ export default function MusicPage() {
             textAlign: 'center',
             padding: '6px 12px',
             fontWeight: 'bold',
-            fontFamily: "'Dancing Script', cursive",
+            fontFamily: "'Poppins', sans-serif",
             background: 'rgba(255,255,255,0.8)',
             borderRadius: '12px',
             boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
@@ -387,7 +387,7 @@ export default function MusicPage() {
           <div style={{
             textAlign: 'center',
             color: 'var(--text)',
-            fontFamily: "'Dancing Script', cursive",
+            fontFamily: "'Poppins', sans-serif",
             fontSize: '1.5em',
             opacity: 0.6
           }}>

@@ -76,7 +76,7 @@ export default function EventModal({ isOpen, onClose, selectedDate }: EventModal
             fontSize: '20px',
             fontWeight: '600',
             color: 'var(--text-dark)',
-            fontFamily: "'Dancing Script', cursive"
+            fontFamily: "'LiebeHeide', 'Caveat', cursive"
           }}>
             {formattedDate}
           </h2>
@@ -154,7 +154,7 @@ export default function EventModal({ isOpen, onClose, selectedDate }: EventModal
               }}>📅</div>
               <p style={{
                 margin: 0,
-                fontFamily: "'Great Vibes', cursive",
+                fontFamily: "'Poppins', sans-serif",
                 fontSize: '16px'
               }}>
                 No tasks for this day
@@ -186,7 +186,7 @@ export default function EventModal({ isOpen, onClose, selectedDate }: EventModal
                   />
                   <div style={{ flex: 1 }}>
                     <span style={{
-                      fontFamily: "'Great Vibes', cursive",
+                      fontFamily: "'Poppins', sans-serif",
                       fontSize: '16px',
                       color: task.is_completed ? 'var(--text-light)' : 'var(--text-dark)',
                       textDecoration: task.is_completed ? 'line-through' : 'none'
@@ -256,7 +256,7 @@ export default function EventModal({ isOpen, onClose, selectedDate }: EventModal
               border: '2px solid var(--border)',
               borderRadius: '12px',
               fontSize: '16px',
-              fontFamily: "'Great Vibes', cursive",
+              fontFamily: "'Poppins', sans-serif",
               background: 'var(--card-bg)',
               color: 'var(--text-dark)',
               outline: 'none',
@@ -278,7 +278,7 @@ export default function EventModal({ isOpen, onClose, selectedDate }: EventModal
               borderRadius: '12px',
               color: 'white',
               fontSize: '16px',
-              fontFamily: "'Great Vibes', cursive",
+              fontFamily: "'Poppins', sans-serif",
               cursor: 'pointer',
               transition: 'all 0.2s',
               display: 'flex',
@@ -315,7 +315,7 @@ export default function EventModal({ isOpen, onClose, selectedDate }: EventModal
               borderRadius: '20px',
               color: 'var(--text-dark)',
               fontSize: '14px',
-              fontFamily: "'Great Vibes', cursive",
+              fontFamily: "'Poppins', sans-serif",
               cursor: 'pointer',
               transition: 'all 0.2s'
             }}

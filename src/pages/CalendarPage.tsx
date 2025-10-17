@@ -228,7 +228,7 @@ export default function CalendarPage() {
               color: 'white',
               fontSize: '24px',
               fontWeight: '600',
-              fontFamily: "'Dancing Script', cursive"
+              fontFamily: "'LiebeHeide', 'Caveat', cursive"
             }}>
               {months[currentDate.getMonth()]} {currentDate.getFullYear()}
             </h2>
@@ -263,7 +263,7 @@ export default function CalendarPage() {
                   background: 'transparent',
                   color: 'var(--text-dark)',
                   fontSize: '16px',
-                  fontFamily: "'Great Vibes', cursive",
+                  fontFamily: "'Poppins', sans-serif",
                   width: '100%'
                 }}
               />
@@ -290,7 +290,7 @@ export default function CalendarPage() {
                     borderRadius: '20px',
                     color: 'var(--text-dark)',
                     fontSize: '14px',
-                    fontFamily: "'Great Vibes', cursive",
+                    fontFamily: "'Poppins', sans-serif",
                     cursor: 'pointer',
                     transition: 'all 0.2s'
                   }}
@@ -321,14 +321,14 @@ export default function CalendarPage() {
               {daysOfWeek.map(day => (
                 <div
                   key={day}
-                  style={{
-                    textAlign: 'center',
-                    padding: '8px 4px',
-                    color: 'var(--text-light)',
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    fontFamily: "'Great Vibes', cursive"
-                  }}
+                style={{
+                  textAlign: 'center',
+                  padding: '8px 4px',
+                  color: 'var(--text-light)',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  fontFamily: "'Poppins', sans-serif"
+                }}
                 >
                   {day}
                 </div>
@@ -358,7 +358,7 @@ export default function CalendarPage() {
                       ? (day.isSelected ? 'white' : 'var(--text-dark)')
                       : 'var(--text-light)',
                     fontSize: '14px',
-                    fontFamily: "'Great Vibes', cursive",
+                    fontFamily: "'Poppins', sans-serif",
                     cursor: 'pointer',
                     transition: 'all 0.2s',
                     position: 'relative',

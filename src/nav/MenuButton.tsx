@@ -30,31 +30,78 @@ export default function MenuButton() {
         <img src="/images/ButtonMenu.png" alt="Menu" />
       </button>
       {showNav && (
-        <nav
-          style={{
-            position: 'absolute',
-            top: 60,
-            left: 20,
-            display: 'flex',
-            flexDirection: 'column',
-            padding: '4px 5px',
-            fontFamily: "'Dancing Script', cursive",
-            fontWeight: 600,
-            fontSize: '1.0em',
-            color: '#000000ff',
-            cursor: 'pointer',
-            minWidth: 90,
-            zIndex: 20,
-            backdropFilter: 'blur(6px)',
-            transition: 'opacity 0.2s',
-          }}
-        >
-          <div onClick={() => handleNavClick(navigateToHome)} style={{ padding: '10px 0', textAlign: 'left' }}>Home</div>
-          <div onClick={() => handleNavClick(navigateToGoals)} style={{ padding: '10px 0', textAlign: 'left' }}>Set Goals</div>
-          <div onClick={() => handleNavClick(navigateToInspo)} style={{ padding: '10px 0', textAlign: 'left' }}>Inspo</div>
-          <div onClick={() => handleNavClick(navigateToMusic)} style={{ padding: '10px 0', textAlign: 'left' }}>Music</div>
-          <div onClick={() => handleNavClick(navigateToCalendar)} style={{ padding: '10px 0', textAlign: 'left' }}>Calendar</div>
-        </nav>
+        <>
+          {/* Custom font styles */}
+          <style>
+            {`
+              .nav-item {
+                font-family: 'LiebeHeide', 'Caveat', cursive !important;
+                font-weight: 600 !important;
+                letter-spacing: 0.5px !important;
+              }
+            `}
+          </style>
+          <nav
+            style={{
+              position: 'absolute',
+              top: 60,
+              left: 20,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px',
+              padding: '16px',
+              background: 'rgba(255, 255, 255, 0.95)',
+              borderRadius: '16px',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              zIndex: 20,
+              minWidth: '140px',
+              transition: 'all 0.3s ease'
+            }}
+          >
+            {[
+              { label: 'Home', action: navigateToHome },
+              { label: 'Goals', action: navigateToGoals },
+              { label: 'Inspo', action: navigateToInspo },
+              { label: 'Music', action: navigateToMusic },
+              { label: 'Calendar', action: navigateToCalendar }
+            ].map((item, index) => (
+              <div
+                key={item.label}
+                onClick={() => handleNavClick(item.action)}
+                className="nav-item"
+                style={{
+                  padding: '8px 16px',
+                  borderRadius: '20px',
+                  border: '2px solid #333',
+                  background: 'transparent',
+                  fontSize: '16px',
+                  color: '#333',
+                  cursor: 'pointer',
+                  textAlign: 'center',
+                  transition: 'all 0.2s ease',
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#ff96c4'
+                  e.currentTarget.style.color = 'white'
+                  e.currentTarget.style.borderColor = '#ff96c4'
+                  e.currentTarget.style.transform = 'scale(1.05)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent'
+                  e.currentTarget.style.color = '#333'
+                  e.currentTarget.style.borderColor = '#333'
+                  e.currentTarget.style.transform = 'scale(1)'
+                }}
+              >
+                {item.label}
+              </div>
+            ))}
+          </nav>
+        </>
       )}
     </>
   )
