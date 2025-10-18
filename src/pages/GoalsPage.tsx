@@ -1,104 +1,44 @@
 import React, { useState } from 'react'
 import Menu from '../components/Menu'
-
-type Goal = {
-  id: string
-  title: string
-  progress: number
-}
-
-type TodoList = {
-  id: string
-  title: string
-  items: TodoItem[]
-}
-
-type TodoItem = {
-  id: string
-  text: string
-  is_completed: boolean
-}
+import { useGoals } from '../contexts/GoalsContext'
 
 export default function GoalsPage() {
-  const [goals, setGoals] = useState<Goal[]>([])
-  const [todoLists, setTodoLists] = useState<TodoList[]>([])
+  const { 
+    goals, 
+    todoLists, 
+    addGoal, 
+    updateGoalProgress, 
+    deleteGoal, 
+    addTodoList, 
+    addTodoItem, 
+    toggleTodoItem, 
+    deleteTodoItem, 
+    deleteTodoList 
+  } = useGoals()
+  
   const [newGoal, setNewGoal] = useState('')
   const [newListName, setNewListName] = useState('')
   const [newItemText, setNewItemText] = useState<{ [listId: string]: string }>({})
+  const [newItemDueDate, setNewItemDueDate] = useState<{ [listId: string]: string }>({})
 
-  function addGoal() {
-    if (!newGoal.trim()) return
-    const goal: Goal = {
-      id: Date.now().toString(),
-      title: newGoal,
-      progress: 0
-    }
-    setGoals([goal, ...goals])
+  const handleAddGoal = () => {
+    addGoal(newGoal)
     setNewGoal('')
   }
 
-  function updateGoalProgress(id: string, progress: number) {
-    setGoals(goals.map(g => g.id === id ? { ...g, progress } : g))
-  }
-
-  function deleteGoal(id: string) {
-    setGoals(goals.filter(g => g.id !== id))
-  }
-
-  function addTodoList() {
-    if (!newListName.trim()) return
-    const list: TodoList = {
-      id: Date.now().toString(),
-      title: newListName,
-      items: []
-    }
-    setTodoLists([list, ...todoLists])
+  const handleAddTodoList = () => {
+    addTodoList(newListName)
     setNewListName('')
   }
 
-  function addTodoItem(listId: string) {
+  const handleAddTodoItem = (listId: string) => {
     const text = newItemText[listId]?.trim()
-    if (!text) return
-
-    setTodoLists(todoLists.map(list => {
-      if (list.id === listId) {
-        const newItem: TodoItem = {
-          id: Date.now().toString(),
-          text,
-          is_completed: false
-        }
-        return { ...list, items: [...list.items, newItem] }
-      }
-      return list
-    }))
-    setNewItemText({ ...newItemText, [listId]: '' })
-  }
-
-  function toggleTodoItem(listId: string, itemId: string) {
-    setTodoLists(todoLists.map(list => {
-      if (list.id === listId) {
-        return {
-          ...list,
-          items: list.items.map(item =>
-            item.id === itemId ? { ...item, is_completed: !item.is_completed } : item
-          )
-        }
-      }
-      return list
-    }))
-  }
-
-  function deleteTodoItem(listId: string, itemId: string) {
-    setTodoLists(todoLists.map(list => {
-      if (list.id === listId) {
-        return { ...list, items: list.items.filter(item => item.id !== itemId) }
-      }
-      return list
-    }))
-  }
-
-  function deleteTodoList(id: string) {
-    setTodoLists(todoLists.filter(list => list.id !== id))
+    if (text) {
+      const dueDate = newItemDueDate[listId] || undefined
+      addTodoItem(listId, text, dueDate)
+      setNewItemText({ ...newItemText, [listId]: '' })
+      setNewItemDueDate({ ...newItemDueDate, [listId]: '' })
+    }
   }
 
   return (
@@ -122,11 +62,11 @@ export default function GoalsPage() {
               type="text"
               value={newGoal}
               onChange={(e) => setNewGoal(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && addGoal()}
+              onKeyPress={(e) => e.key === 'Enter' && handleAddGoal()}
               placeholder="Enter a new goal..."
               className="goal-input"
             />
-            <button onClick={addGoal} className="add-btn">+</button>
+            <button onClick={handleAddGoal} className="add-btn">+</button>
           </div>
 
           <div className="items-list">
@@ -169,11 +109,11 @@ export default function GoalsPage() {
               type="text"
               value={newListName}
               onChange={(e) => setNewListName(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && addTodoList()}
+              onKeyPress={(e) => e.key === 'Enter' && handleAddTodoList()}
               placeholder="Create a new list..."
               className="goal-input"
             />
-            <button onClick={addTodoList} className="add-btn">+</button>
+            <button onClick={handleAddTodoList} className="add-btn">+</button>
           </div>
 
           <div className="items-list">
@@ -203,7 +143,17 @@ export default function GoalsPage() {
                         onChange={() => toggleTodoItem(list.id, item.id)}
                         className="checkbox"
                       />
-                      <span className={item.is_completed ? 'completed' : ''}>{item.text}</span>
+                      <div className="item-content">
+                        <span className={item.is_completed ? 'completed' : ''}>{item.text}</span>
+                        {item.dueDate && (
+                          <span className={`due-date ${item.is_completed ? 'completed' : ''}`}>
+                            📅 {new Date(item.dueDate).toLocaleDateString('en-US', { 
+                              month: 'short', 
+                              day: 'numeric' 
+                            })}
+                          </span>
+                        )}
+                      </div>
                       <button onClick={() => deleteTodoItem(list.id, item.id)} className="delete-btn-small">×</button>
                     </div>
                   ))}
@@ -214,11 +164,18 @@ export default function GoalsPage() {
                     type="text"
                     value={newItemText[list.id] || ''}
                     onChange={(e) => setNewItemText({ ...newItemText, [list.id]: e.target.value })}
-                    onKeyPress={(e) => e.key === 'Enter' && addTodoItem(list.id)}
+                    onKeyPress={(e) => e.key === 'Enter' && handleAddTodoItem(list.id)}
                     placeholder="Add item..."
                     className="item-input"
                   />
-                  <button onClick={() => addTodoItem(list.id)} className="add-btn-small">+</button>
+                  <input
+                    type="date"
+                    value={newItemDueDate[list.id] || ''}
+                    onChange={(e) => setNewItemDueDate({ ...newItemDueDate, [list.id]: e.target.value })}
+                    className="date-input"
+                    title="Set due date (optional)"
+                  />
+                  <button onClick={() => handleAddTodoItem(list.id)} className="add-btn-small">+</button>
                 </div>
               </div>
             ))}

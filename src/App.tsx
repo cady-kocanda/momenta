@@ -1,9 +1,11 @@
 import React from 'react'
 import { NavigationProvider, useNavigation } from './contexts/NavigationContext'
+import { GoalsProvider } from './contexts/GoalsContext'
 import MenuButton from './nav/MenuButton'
 import GoalsPage from './pages/GoalsPage'
 import InspoPage from './pages/InspoPage'
 import MusicPage from './pages/MusicPage'
+import CalendarPage from './pages/CalendarPage'
 
 function AppContent() {
   const { currentPage } = useNavigation()
@@ -16,7 +18,7 @@ function AppContent() {
       {currentPage === 'home' && (
         <div className="home-wrap">
           <img src="/images/Home.png" alt="Home" className="home-img" />
-          <div className="home-overlay">welcome</div>
+          <div className="home-overlay" style={{ fontFamily: "'LiebeHeide', 'Caveat', cursive" }}>welcome</div>
         </div>
       )}
       {currentPage === 'goals' && (
@@ -28,14 +30,19 @@ function AppContent() {
       {currentPage === 'music' && (
         <MusicPage />
       )}
+      {currentPage === 'calendar' && (
+        <CalendarPage />
+      )}
     </div>
   )
 }
 
 export default function App() {
   return (
-    <NavigationProvider>
-      <AppContent />
-    </NavigationProvider>
+    <GoalsProvider>
+      <NavigationProvider>
+        <AppContent />
+      </NavigationProvider>
+    </GoalsProvider>
   )
 }
