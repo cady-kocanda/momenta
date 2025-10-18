@@ -168,8 +168,8 @@ export default function InspoPage() {
         borderBottom: '1px solid var(--shadow)'
       }}>
         <h1 style={{
-          fontFamily: "'Dancing Script', cursive",
-          fontSize: '1.8em',
+          fontFamily: "'LiebeHeide', 'Caveat', cursive",
+          fontSize: '2.4em',
           margin: 0,
           color: 'var(--text)'
         }}>
@@ -202,8 +202,8 @@ export default function InspoPage() {
           padding: '40px'
         }}>
           <h2 style={{
-            fontFamily: "'Dancing Script', cursive",
-            fontSize: '1.5em',
+            fontFamily: "'LiebeHeide', 'Caveat', cursive",
+            fontSize: '2.0em',
             color: 'var(--text)',
             textAlign: 'center',
             marginBottom: '20px'
@@ -242,7 +242,7 @@ export default function InspoPage() {
               style={{ width: '60px', height: '60px', objectFit: 'contain' }}
             />
             <span style={{
-              fontFamily: "'Dancing Script', cursive",
+              fontFamily: "'Poppins', sans-serif",
               fontSize: '1.3em',
               color: '#E60023',
               fontWeight: 600
@@ -273,7 +273,7 @@ export default function InspoPage() {
             }}
           >
             <span style={{
-              fontFamily: "'Dancing Script', cursive",
+              fontFamily: "'Poppins', sans-serif",
               fontSize: '1.3em',
               color: '#fff',
               fontWeight: 600
