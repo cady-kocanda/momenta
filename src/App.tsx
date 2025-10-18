@@ -5,6 +5,7 @@ import MenuButton from './nav/MenuButton'
 import GoalsPage from './pages/GoalsPage'
 import InspoPage from './pages/InspoPage'
 import MusicPage from './pages/MusicPage'
+import ExplosionAnimation from './components/ExplosionAnimation'
 import CalendarPage from './pages/CalendarPage'
 
 function AppContent() {
@@ -17,8 +18,8 @@ function AppContent() {
 
       {currentPage === 'home' && (
         <div className="home-wrap">
-          <img src="/images/Home.png" alt="Home" className="home-img" />
-          <div className="home-overlay" style={{ fontFamily: "'LiebeHeide', 'Caveat', cursive" }}>welcome</div>
+          <ExplosionAnimation isVisible={currentPage === 'home'} />
+          <img src="/images/Homepage.png" alt="Home" className="home-img" />
         </div>
       )}
       {currentPage === 'goals' && (
