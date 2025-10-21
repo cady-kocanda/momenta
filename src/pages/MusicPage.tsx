@@ -5,7 +5,6 @@ export default function MusicPage() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTrack, setCurrentTrack] = useState(0)
   const [spotifyData, setSpotifyData] = useState<any>(null)
-  const [showSpotifyContainer, setShowSpotifyContainer] = useState(false)
 
   // TODO: Spotify API Integration
   // Replace this with actual Spotify API calls
@@ -23,9 +22,7 @@ export default function MusicPage() {
     setIsPlaying(!isPlaying)
   }
 
-  const handleSpotifyClick = () => {
-    setShowSpotifyContainer(!showSpotifyContainer)
-  }
+  // Always show Spotify UI; no toggling
 
  
 
@@ -50,11 +47,11 @@ export default function MusicPage() {
           style={{
             position: 'absolute',
             left: '40%',
-            top: '22%',
+            top: '27%',
             width: '380px',
             height: '380px',
             objectFit: 'contain',
-            zIndex: 3,
+            zIndex: 9,
             filter: 'drop-shadow(0 8px 20px rgba(0,0,0,0.3))',
             transition: 'all 0.3s ease'
           }}
@@ -71,18 +68,22 @@ export default function MusicPage() {
         {/* Large Cassette Tape Background */}
         <div style={{
           position: 'absolute',
-          top: '34%',
+          top: '20%',
           left: '50%',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 1
+          transform: 'translateX(-50%)',
+          zIndex: 1,
+          width: '100%',
+          padding: '0 0px',
+          boxSizing: 'border-box'
         }}>
           <img 
             src="/images/blacktape.png" 
             alt="Cassette tape" 
             style={{
-              width: '380px',
+              width: '100%',
               height: 'auto',
-              opacity: 0.8
+              display: 'block',
+              margin: '0 auto'
             }}
           />
           {/* Playlist Label Text */}
@@ -105,74 +106,25 @@ export default function MusicPage() {
           </div>
         </div>
 
-        {/* Spotify Integration - Original "tap for my spotify" */}
+        {/* Spotify Panel (bottom-centered, always visible) */}
         <div style={{
           position: 'absolute',
-          right: '75%',
-          top: '32%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '12px',
-          zIndex: 4
+          left: '48%',
+          top: '43%',
+          transform: 'translate(-51%, -50%)',
+          zIndex: 5,
+          width: '73%'
         }}>
-          <img 
-            src="/images/Record2.png" 
-            alt="Vinyl record" 
-            style={{
-              width: '80px',
-              height: '80px',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.3))'
-            }}
-            onClick={handleSpotifyClick}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.1) rotate(5deg)'
-              e.currentTarget.style.filter = 'drop-shadow(0 6px 16px rgba(0,0,0,0.4))'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1) rotate(0deg)'
-              e.currentTarget.style.filter = 'drop-shadow(0 4px 12px rgba(0,0,0,0.3))'
-            }}
-          />
           <div style={{
-            color: '#333',
-            fontSize: '0.9em',
-            textAlign: 'center',
-            padding: '6px 12px',
-            fontWeight: 'bold',
-            fontFamily: "'Poppins', sans-serif",
-            background: 'rgba(255,255,255,0.8)',
-            borderRadius: '12px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+            background: '#191414',
+            borderRadius: '20px',
+            padding: '10px',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+            height: '130px'
           }}>
-            tap for my spotify
-          </div>
-        </div>
-
-        {/* Spotify Panel (bottom-centered) */}
-        {showSpotifyContainer ? (
-          <div style={{
-            position: 'absolute',
-            left: '50%',
-            bottom: '40px',
-            transform: 'translateX(-50%)',
-            zIndex: 5,
-            width: 'min(90%, 520px)'
-          }}>
-            <div style={{
-              background: '#191414',
-              borderRadius: '20px',
-              padding: '10px',
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              position: 'relative',
-              boxShadow: '0 15px 35px rgba(0,0,0,0.3)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              animation: 'fadeIn 0.5s ease-in'
-            }}>
               {/* Top Section - Album Cover and Track List */}
               <div style={{
                 display: 'flex',
@@ -256,138 +208,10 @@ export default function MusicPage() {
                     ))}
                   </div>
                 </div>
+              
               </div>
-
-              {/* Bottom Section - Playlist Info and Controls */}
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'flex-end'
-              }}>
-                {/* Left - Playlist Info */}
-                <div style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '8px'
-                }}>
-                  {/* Playlist Title */}
-                  <div style={{
-                    height: '16px',
-                    width: '200px',
-                    background: '#404040',
-                    borderRadius: '2px'
-                  }} />
-                  
-                  {/* Preview Button */}
-                  <div style={{
-                    height: '32px',
-                    width: '80px',
-                    background: '#404040',
-                    borderRadius: '16px'
-                  }} />
-                </div>
-
-                {/* Right - Playback Controls */}
-                <div style={{
-                  display: 'flex',
-                  gap: '3px',
-                  alignItems: 'center'
-                }}>
-                  {/* Previous Track */}
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    background: '#404040',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#b3b3b3',
-                    fontSize: '12px'
-                  }}>
-                    ⏮
-                  </div>
-
-                  {/* Next Track */}
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    background: '#404040',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#b3b3b3',
-                    fontSize: '12px'
-                  }}>
-                    ⏭
-                  </div>
-
-                  {/* Add to Playlist */}
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    background: '#404040',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#b3b3b3',
-                    fontSize: '12px'
-                  }}>
-                    +
-                  </div>
-
-                  {/* More Options */}
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    background: '#404040',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#b3b3b3',
-                    fontSize: '12px'
-                  }}>
-                    ⋯
-                  </div>
-
-                  {/* Play Button */}
-                  <div style={{
-                    width: '40px',
-                    height: '40px',
-                    background: '#1db954',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'white',
-                    fontSize: '14px'
-                  }}>
-                    ▶
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
-        ) : (
-          /* Default message when Spotify container is not shown */
-          <div style={{
-            position: 'absolute',
-            left: '50%',
-            bottom: '50px',
-            transform: 'translateX(-50%)',
-            zIndex: 2,
-            textAlign: 'center',
-            color: 'var(--text)',
-            fontFamily: "'Poppins', sans-serif",
-            fontSize: '1.5em',
-            opacity: 0.6
-          }}>
-            <p>Click the record above to open Spotify</p>
-          </div>
-        )}
+        </div>
       </div>
       
       {/* Add CSS animation */}
