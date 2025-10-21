@@ -6,17 +6,32 @@ export default function MenuButton() {
   const btnRef = useRef<HTMLButtonElement>(null)
   const [showNav, setShowNav] = useState(false)
 
+  console.log('RENDER: showNav =', showNav)
+
   const handleClick = () => {
+    console.log('=== CLICK START ===')
+    console.log('showNav state at click:', showNav)
+    const isCurrentlyOpen = showNav
+    console.log('isCurrentlyOpen:', isCurrentlyOpen)
+    
+    // Spin button
     if (btnRef.current) {
+      const rotation = isCurrentlyOpen ? -360 : 360 // counterclockwise if closing, clockwise if opening
+      console.log('Will rotate:', rotation, 'degrees')
       btnRef.current.animate([
         { transform: 'rotate(0deg)' },
-        { transform: 'rotate(360deg)' }
+        { transform: `rotate(${rotation}deg)` }
       ], {
         duration: 400,
         easing: 'cubic-bezier(0.4, 0.2, 0.2, 1)'
       })
     }
-    setShowNav(v => !v)
+    
+    // Toggle menu
+    const newValue = !showNav
+    console.log('Setting showNav to:', newValue)
+    setShowNav(newValue)
+    console.log('=== CLICK END ===')
   }
 
   const handleNavClick = (callback: () => void) => {
