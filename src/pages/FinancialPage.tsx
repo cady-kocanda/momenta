@@ -3,6 +3,7 @@ import { useFinancial } from '../contexts/FinancialContext'
 import BudgetCategoryCard from '../components/financial/BudgetCategoryCard'
 import SavingsGoalCard from '../components/financial/SavingsGoalCard'
 import WishlistItemCard from '../components/financial/WishlistItemCard'
+import { initializeSampleData } from '../utils/sampleFinancialData'
 
 type TabType = 'overview' | 'budget' | 'savings' | 'wishlist'
 
@@ -18,6 +19,11 @@ export default function FinancialPage() {
 
   const [activeTab, setActiveTab] = useState<TabType>('overview')
   const stats = getFinancialStats()
+
+  const handleLoadSampleData = () => {
+    initializeSampleData()
+    window.location.reload() // Reload to fetch the new data
+  }
 
   const tabs = [
     { id: 'overview' as TabType, label: 'Overview' },
@@ -35,55 +41,34 @@ export default function FinancialPage() {
       display: 'flex',
       flexDirection: 'column'
     }}>
-      {/* Header */}
-      <div style={{
-        padding: '24px 32px',
-        background: 'var(--card-bg)',
-        borderBottom: '2px solid var(--border)'
-      }}>
-        <h1 style={{
-          margin: '0 0 8px 0',
-          fontSize: '36px',
-          fontWeight: '700',
-          color: 'var(--text-dark)',
-          fontFamily: "'LiebeHeide', 'Caveat', cursive"
-        }}>
-          Money
-        </h1>
-        <p style={{
-          margin: 0,
-          fontSize: '16px',
-          color: 'var(--text-light)'
-        }}>
-          Track your financial journey with style
-        </p>
-      </div>
 
       {/* Tabs */}
       <div style={{
         display: 'flex',
-        gap: '8px',
-        padding: '16px 32px',
-        background: 'var(--card-bg)',
-        borderBottom: '1px solid var(--border)',
-        overflowX: 'auto'
+        gap: '12px',
+        padding: '80px 32px 16px 32px',
+        overflowX: 'auto',
+        alignItems: 'center'
       }}>
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
+            className="nav-item"
             style={{
-              padding: '10px 20px',
-              background: activeTab === tab.id ? 'var(--accent)' : 'transparent',
+              padding: '8px 16px',
+              background: activeTab === tab.id ? 'var(--accent)' : 'var(--bg)',
               color: activeTab === tab.id ? 'white' : 'var(--text-dark)',
-              border: activeTab === tab.id ? 'none' : '2px solid var(--border)',
-              borderRadius: '20px',
-              fontSize: '15px',
+              border: 'none',
+              borderRadius: '8px',
+              fontSize: '16px',
               fontWeight: '600',
               cursor: 'pointer',
               transition: 'all 0.2s',
-              fontFamily: "'Poppins', sans-serif",
-              whiteSpace: 'nowrap'
+              fontFamily: "'LiebeHeide', 'Caveat', cursive",
+              whiteSpace: 'nowrap',
+              boxShadow: activeTab === tab.id ? '0 2px 8px rgba(255, 150, 196, 0.3)' : '0 2px 6px rgba(0, 0, 0, 0.08)',
+              position: 'relative'
             }}
           >
             {tab.label}
@@ -238,9 +223,26 @@ export default function FinancialPage() {
                 padding: '60px 20px',
                 color: 'var(--text-light)'
               }}>
-                <div style={{ fontSize: '64px', marginBottom: '16px' }}></div>
-                <p style={{ fontSize: '18px' }}>No budget categories yet.</p>
-                <p style={{ fontSize: '14px' }}>Add some sample data to get started!</p>
+                <div style={{ fontSize: '64px', marginBottom: '16px' }}>📊</div>
+                <p style={{ fontSize: '18px', marginBottom: '8px' }}>No budget categories yet.</p>
+                <p style={{ fontSize: '14px', marginBottom: '24px' }}>Add some sample data to get started!</p>
+                <button
+                  onClick={handleLoadSampleData}
+                  style={{
+                    padding: '12px 24px',
+                    background: 'var(--accent)',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '20px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    fontFamily: "'LiebeHeide', 'Caveat', cursive",
+                    boxShadow: '0 4px 12px rgba(255, 150, 196, 0.3)'
+                  }}
+                >
+                  Load Sample Data
+                </button>
               </div>
             )}
           </div>
@@ -293,9 +295,26 @@ export default function FinancialPage() {
                 padding: '60px 20px',
                 color: 'var(--text-light)'
               }}>
-                <div style={{ fontSize: '64px', marginBottom: '16px' }}></div>
-                <p style={{ fontSize: '18px' }}>No savings goals yet.</p>
-                <p style={{ fontSize: '14px' }}>Create your first goal to start saving!</p>
+                <div style={{ fontSize: '64px', marginBottom: '16px' }}>🎯</div>
+                <p style={{ fontSize: '18px', marginBottom: '8px' }}>No savings goals yet.</p>
+                <p style={{ fontSize: '14px', marginBottom: '24px' }}>Create your first goal to start saving!</p>
+                <button
+                  onClick={handleLoadSampleData}
+                  style={{
+                    padding: '12px 24px',
+                    background: 'var(--accent)',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '20px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    fontFamily: "'LiebeHeide', 'Caveat', cursive",
+                    boxShadow: '0 4px 12px rgba(255, 150, 196, 0.3)'
+                  }}
+                >
+                  Load Sample Data
+                </button>
               </div>
             )}
           </div>
@@ -353,9 +372,26 @@ export default function FinancialPage() {
                 padding: '60px 20px',
                 color: 'var(--text-light)'
               }}>
-                <div style={{ fontSize: '64px', marginBottom: '16px' }}></div>
-                <p style={{ fontSize: '18px' }}>Your wishlist is empty.</p>
-                <p style={{ fontSize: '14px' }}>Add items you're dreaming about!</p>
+                <div style={{ fontSize: '64px', marginBottom: '16px' }}>🛍️</div>
+                <p style={{ fontSize: '18px', marginBottom: '8px' }}>Your wishlist is empty.</p>
+                <p style={{ fontSize: '14px', marginBottom: '24px' }}>Add items you're dreaming about!</p>
+                <button
+                  onClick={handleLoadSampleData}
+                  style={{
+                    padding: '12px 24px',
+                    background: 'var(--accent)',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '20px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    fontFamily: "'LiebeHeide', 'Caveat', cursive",
+                    boxShadow: '0 4px 12px rgba(255, 150, 196, 0.3)'
+                  }}
+                >
+                  Load Sample Data
+                </button>
               </div>
             )}
           </div>
