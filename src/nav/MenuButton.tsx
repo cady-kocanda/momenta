@@ -55,12 +55,15 @@ export default function MenuButton() {
                 letter-spacing: 0.5px !important;
                 position: relative;
                 color: var(--text-dark);
-                padding: 4px 8px;
+                padding: 6px 12px;
                 cursor: pointer;
                 text-align: center;
                 transition: none;
                 display: inline-block;
                 width: fit-content;
+                background: var(--bg);
+                border-radius: 8px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
               }
               .nav-item::before,
               .nav-item::after {
