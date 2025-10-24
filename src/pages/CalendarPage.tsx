@@ -154,7 +154,7 @@ export default function CalendarPage() {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '20px',
-        background: '#f5f5f5'
+        background: 'var(--bg)'
       }}>
         <div style={{
           background: 'var(--card-bg)',
