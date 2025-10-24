@@ -1,12 +1,14 @@
 import React from 'react'
 import { NavigationProvider, useNavigation } from './contexts/NavigationContext'
 import { GoalsProvider } from './contexts/GoalsContext'
+import { FinancialProvider } from './contexts/FinancialContext'
 import MenuButton from './nav/MenuButton'
 import GoalsPage from './pages/GoalsPage'
 import InspoPage from './pages/InspoPage'
 import MusicPage from './pages/MusicPage'
 import ExplosionAnimation from './components/ExplosionAnimation'
 import CalendarPage from './pages/CalendarPage'
+import FinancialPage from './pages/FinancialPage'
 
 function AppContent() {
   const { currentPage } = useNavigation()
@@ -34,6 +36,9 @@ function AppContent() {
       {currentPage === 'calendar' && (
         <CalendarPage />
       )}
+      {currentPage === 'finance' && (
+        <FinancialPage />
+      )}
     </div>
   )
 }
@@ -41,9 +46,11 @@ function AppContent() {
 export default function App() {
   return (
     <GoalsProvider>
-      <NavigationProvider>
-        <AppContent />
-      </NavigationProvider>
+      <FinancialProvider>
+        <NavigationProvider>
+          <AppContent />
+        </NavigationProvider>
+      </FinancialProvider>
     </GoalsProvider>
   )
 }

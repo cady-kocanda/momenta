@@ -2,22 +2,16 @@ import React, { useRef, useState } from 'react'
 import { useNavigation } from '../contexts/NavigationContext'
 
 export default function MenuButton() {
-  const { navigateToHome, navigateToGoals, navigateToInspo, navigateToMusic, navigateToCalendar } = useNavigation()
+  const { navigateToHome, navigateToGoals, navigateToInspo, navigateToMusic, navigateToCalendar, navigateToFinance } = useNavigation()
   const btnRef = useRef<HTMLButtonElement>(null)
   const [showNav, setShowNav] = useState(false)
 
-  console.log('RENDER: showNav =', showNav)
-
   const handleClick = () => {
-    console.log('=== CLICK START ===')
-    console.log('showNav state at click:', showNav)
     const isCurrentlyOpen = showNav
-    console.log('isCurrentlyOpen:', isCurrentlyOpen)
     
     // Spin button
     if (btnRef.current) {
       const rotation = isCurrentlyOpen ? -360 : 360 // counterclockwise if closing, clockwise if opening
-      console.log('Will rotate:', rotation, 'degrees')
       btnRef.current.animate([
         { transform: 'rotate(0deg)' },
         { transform: `rotate(${rotation}deg)` }
@@ -28,10 +22,7 @@ export default function MenuButton() {
     }
     
     // Toggle menu
-    const newValue = !showNav
-    console.log('Setting showNav to:', newValue)
-    setShowNav(newValue)
-    console.log('=== CLICK END ===')
+    setShowNav(!showNav)
   }
 
   const handleNavClick = (callback: () => void) => {
@@ -127,12 +118,12 @@ export default function MenuButton() {
             </div>
             {/* Second row starts below the button at the left-hand side */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 24, marginLeft: 0 }}>
-              {[{ label: 'Music', action: navigateToMusic }, { label: 'Calendar', action: navigateToCalendar }].map((item, i) => (
+              {[{ label: 'Music', action: navigateToMusic }, { label: 'Calendar', action: navigateToCalendar }, { label: 'Finance', action: navigateToFinance }].map((item, i) => (
                 <div
                   key={item.label}
                   onClick={() => handleNavClick(item.action)}
                   className="nav-item"
-                  style={{ fontSize: '20px', transform: `translateY(${[1, -1][i]}px) skewX(${[0.5, -0.2][i]}deg)` }}
+                  style={{ fontSize: '20px', transform: `translateY(${[1, -1, 0.5][i]}px) skewX(${[0.5, -0.2, 0.3][i]}deg)` }}
                 >
                   {item.label}
                 </div>
