@@ -1,6 +1,16 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react'
 
-type Page = 'home' | 'goals' | 'inspo' | 'music' | 'calendar' | 'finance'
+type Page =
+  | 'home'
+  | 'goals'
+  | 'inspo'
+  | 'music'
+  | 'calendar'
+  | 'finance'
+  | 'finance_savings'
+  | 'finance_budget'
+  | 'finance_wishlist'
+  | 'finance_overview'
 
 interface NavigationContextType {
   currentPage: Page
@@ -11,6 +21,10 @@ interface NavigationContextType {
   navigateToMusic: () => void
   navigateToCalendar: () => void
   navigateToFinance: () => void
+  navigateToFinanceOverview: () => void
+  navigateToFinanceSavings: () => void
+  navigateToFinanceBudget: () => void
+  navigateToFinanceWishlist: () => void
 }
 
 const NavigationContext = createContext<NavigationContextType | undefined>(undefined)
@@ -29,6 +43,10 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
   const navigateToMusic = () => setCurrentPage('music')
   const navigateToCalendar = () => setCurrentPage('calendar')
   const navigateToFinance = () => setCurrentPage('finance')
+  const navigateToFinanceOverview = () => setCurrentPage('finance_overview')
+  const navigateToFinanceSavings = () => setCurrentPage('finance_savings')
+  const navigateToFinanceBudget = () => setCurrentPage('finance_budget')
+  const navigateToFinanceWishlist = () => setCurrentPage('finance_wishlist')
 
   const value: NavigationContextType = {
     currentPage,
@@ -38,7 +56,11 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
     navigateToInspo,
     navigateToMusic,
     navigateToCalendar,
-    navigateToFinance
+    navigateToFinance,
+    navigateToFinanceOverview,
+    navigateToFinanceSavings,
+    navigateToFinanceBudget,
+    navigateToFinanceWishlist
   }
 
   return (

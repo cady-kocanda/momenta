@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useFinancial } from '../contexts/FinancialContext'
-import BudgetCategoryCard from '../components/financial/BudgetCategoryCard'
-import SavingsGoalCard from '../components/financial/SavingsGoalCard'
-import WishlistItemCard from '../components/financial/WishlistItemCard'
 import { initializeSampleData } from '../utils/sampleFinancialData'
+import { useNavigation } from '../contexts/NavigationContext'
 
-type TabType = 'overview' | 'budget' | 'savings' | 'wishlist'
+ 
 
 export default function FinancialPage() {
   const {
@@ -17,7 +15,7 @@ export default function FinancialPage() {
     markWishlistPurchased
   } = useFinancial()
 
-  const [activeTab, setActiveTab] = useState<TabType>('overview')
+  const { navigateToFinanceOverview, navigateToFinanceSavings, navigateToFinanceBudget, navigateToFinanceWishlist } = useNavigation()
   const stats = getFinancialStats()
 
   const handleLoadSampleData = () => {
@@ -25,12 +23,19 @@ export default function FinancialPage() {
     window.location.reload() // Reload to fetch the new data
   }
 
-  const tabs = [
-    { id: 'overview' as TabType, label: 'Overview' },
-    { id: 'budget' as TabType, label: 'Budget'},
-    { id: 'savings' as TabType, label: 'Savings'},
-    { id: 'wishlist' as TabType, label: 'Wishlist'}
-  ]
+  // hub-only – no scroll sections
+
+  const formatMoneyShort = (amount: number) => {
+    if (amount >= 1_000_000) return `$${(amount / 1_000_000).toFixed(1)}m`
+    if (amount >= 1_000) return `$${(amount / 1_000).toFixed(1)}k`
+    return `$${Math.round(amount).toLocaleString()}`
+  }
+
+  const activeGoalsCount = savingsGoals.filter(g => !g.isCompleted).length
+  const budgetCount = budgetCategories.length
+  const wishlistCount = wishlistItems.length
+
+  
 
   return (
     <div style={{
@@ -42,362 +47,218 @@ export default function FinancialPage() {
       flexDirection: 'column'
     }}>
 
-      {/* Tabs */}
+      {/* Title Row */}
       <div style={{
+        padding: '72px 32px 4px 32px',
         display: 'flex',
-        gap: '12px',
-        padding: '80px 32px 16px 32px',
-        overflowX: 'auto',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'space-between'
       }}>
-        {tabs.map(tab => (
+        <div />
+        <h1 style={{
+          margin: 0,
+          fontSize: '36px',
+          fontWeight: 700,
+          color: 'var(--text-dark)',
+          fontFamily: "'LiebeHeide', 'Caveat', cursive",
+          letterSpacing: '0.5px'
+        }}>
+          Financial Tracker
+        </h1>
+      </div>
+            <br>
+            </br>
+      {/* Tile Navigation (no second navbar) */}
+      <div style={{ padding: '12px 16px 8px 16px' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: "repeat(2, min(28vmin, 180px))",
+          gridTemplateRows: "repeat(2, min(28vmin, 180px))",
+          gap: '10px',
+          justifyContent: 'center',
+          alignContent: 'start'
+        }}>
           <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className="nav-item"
+            onClick={navigateToFinanceOverview}
             style={{
-              padding: '8px 16px',
-              background: activeTab === tab.id ? 'var(--accent)' : 'var(--bg)',
-              color: activeTab === tab.id ? 'white' : 'var(--text-dark)',
+              position: 'relative',
+              textAlign: 'left',
+              padding: '18px 16px 16px 16px',
+              backgroundImage: "url('/images/image1.png')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              color: 'var(--text-dark)',
               border: 'none',
-              borderRadius: '8px',
-              fontSize: '16px',
-              fontWeight: '600',
+              borderRadius: '12px',
+              fontSize: '18px',
+              fontWeight: '700',
               cursor: 'pointer',
-              transition: 'all 0.2s',
-              fontFamily: "'LiebeHeide', 'Caveat', cursive",
-              whiteSpace: 'nowrap',
-              boxShadow: activeTab === tab.id ? '0 2px 8px rgba(255, 150, 196, 0.3)' : '0 2px 6px rgba(0, 0, 0, 0.08)',
-              position: 'relative'
+              boxShadow: '0 6px 0 rgba(0,0,0,0.08), 0 12px 16px rgba(0,0,0,0.06)',
+              letterSpacing: '0.3px',
+              width: '100%',
+              height: '100%',
+              opacity: 0.8
             }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = '1' }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.8' }}
           >
-            {tab.label}
+            <div style={{
+              fontSize: '26px',
+              marginBottom: '6px',
+              background: 'rgba(255,255,255,0.85)',
+              backdropFilter: 'blur(2px)',
+              borderRadius: '10px',
+              padding: '6px 10px',
+              display: 'inline-block',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.12)'
+            }}>Overview</div>
+            <div style={{
+              fontSize: '14px',
+              opacity: 0.9,
+              background: 'rgba(255,255,255,0.8)',
+              borderRadius: '8px',
+              padding: '4px 8px',
+              display: 'inline-block',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.12)'
+            }}>{activeGoalsCount} goals</div>
           </button>
-        ))}
+          <button
+            onClick={navigateToFinanceBudget}
+            style={{
+              position: 'relative',
+              textAlign: 'left',
+              padding: '18px 16px 16px 16px',
+              backgroundImage: "url('/images/image2.png')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              color: 'var(--text-dark)',
+              border: 'none',
+              borderRadius: '12px',
+              fontSize: '18px',
+              fontWeight: '700',
+              cursor: 'pointer',
+              boxShadow: '0 6px 0 rgba(0,0,0,0.08), 0 12px 16px rgba(0,0,0,0.06)',
+              letterSpacing: '0.3px',
+              width: '100%',
+              height: '100%',
+              opacity: 0.8
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = '1' }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.9' }}
+          >
+            <div style={{
+              fontSize: '26px',
+              marginBottom: '6px',
+              background: 'rgba(255,255,255,0.85)',
+              backdropFilter: 'blur(2px)',
+              borderRadius: '10px',
+              padding: '6px 10px',
+              display: 'inline-block',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.12)'
+            }}>Budget</div>
+            <div style={{
+              fontSize: '14px',
+              opacity: 0.9,
+              background: 'rgba(255,255,255,0.8)',
+              borderRadius: '8px',
+              padding: '4px 8px',
+              display: 'inline-block',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.12)'
+            }}>{budgetCount} cats</div>
+          </button>
+          <button
+            onClick={navigateToFinanceSavings}
+            style={{
+              position: 'relative',
+              textAlign: 'left',
+              padding: '18px 16px 16px 16px',
+              backgroundImage: "url('/images/image3.png')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              color: 'var(--text-dark)',
+              border: 'none',
+              borderRadius: '12px',
+              fontSize: '18px',
+              fontWeight: '700',
+              cursor: 'pointer',
+              boxShadow: '0 6px 0 rgba(0,0,0,0.08), 0 12px 16px rgba(0,0,0,0.06)',
+              letterSpacing: '0.3px',
+              width: '100%',
+              height: '100%',
+              opacity: 0.8
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = '1' }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.8' }}
+          >
+            <div style={{
+              fontSize: '26px',
+              marginBottom: '6px',
+              background: 'rgba(255,255,255,0.85)',
+              backdropFilter: 'blur(2px)',
+              borderRadius: '10px',
+              padding: '6px 10px',
+              display: 'inline-block',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.12)'
+            }}>Savings</div>
+            <div style={{
+              fontSize: '14px',
+              opacity: 0.9,
+              background: 'rgba(255,255,255,0.8)',
+              borderRadius: '8px',
+              padding: '4px 8px',
+              display: 'inline-block',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.12)'
+            }}>{formatMoneyShort(stats.totalSavings)}</div>
+          </button>
+          <button
+            onClick={navigateToFinanceWishlist}
+            style={{
+              position: 'relative',
+              textAlign: 'left',
+              padding: '18px 16px 16px 16px',
+              backgroundImage: "url('/images/image4.png')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              color: 'var(--text-dark)',
+              border: 'none',
+              borderRadius: '12px',
+              fontSize: '18px',
+              fontWeight: '700',
+              cursor: 'pointer',
+              boxShadow: '0 6px 0 rgba(0,0,0,0.08), 0 12px 16px rgba(0,0,0,0.06)',
+              letterSpacing: '0.3px',
+              width: '100%',
+              height: '100%',
+              opacity: 0.8
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = '1' }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.8' }}
+          >
+            <div style={{
+              fontSize: '26px',
+              marginBottom: '6px',
+              background: 'rgba(255,255,255,0.85)',
+              backdropFilter: 'blur(2px)',
+              borderRadius: '10px',
+              padding: '6px 10px',
+              display: 'inline-block',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.12)'
+            }}>Wishlist</div>
+            <div style={{
+              fontSize: '14px',
+              opacity: 0.9,
+              background: 'rgba(255,255,255,0.8)',
+              borderRadius: '8px',
+              padding: '4px 8px',
+              display: 'inline-block',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.12)'
+            }}>{wishlistCount} items</div>
+          </button>
+        </div>
       </div>
 
-      {/* Content */}
-      <div style={{
-        flex: 1,
-        overflowY: 'auto',
-        padding: '24px 32px'
-      }}>
-        {/* Overview Tab */}
-        {activeTab === 'overview' && (
-          <div>
-            {/* Stats Cards */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: '16px',
-              marginBottom: '32px'
-            }}>
-              <div style={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                borderRadius: '16px',
-                padding: '20px',
-                color: 'white'
-              }}>
-                <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>Net Worth</div>
-                <div style={{
-                  fontSize: '32px',
-                  fontWeight: '700',
-                  fontFamily: "'Poppins', sans-serif"
-                }}>
-                  ${stats.netWorth.toLocaleString()}
-                </div>
-              </div>
-
-              <div style={{
-                background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                borderRadius: '16px',
-                padding: '20px',
-                color: 'white'
-              }}>
-                <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>This Month</div>
-                <div style={{
-                  fontSize: '32px',
-                  fontWeight: '700',
-                  fontFamily: "'Poppins', sans-serif"
-                }}>
-                  ${stats.totalExpenses.toLocaleString()}
-                </div>
-                <div style={{ fontSize: '12px', opacity: 0.8, marginTop: '4px' }}>spent</div>
-              </div>
-
-              <div style={{
-                background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-                borderRadius: '16px',
-                padding: '20px',
-                color: 'white'
-              }}>
-                <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>Total Savings</div>
-                <div style={{
-                  fontSize: '32px',
-                  fontWeight: '700',
-                  fontFamily: "'Poppins', sans-serif"
-                }}>
-                  ${stats.totalSavings.toLocaleString()}
-                </div>
-              </div>
-            </div>
-
-            {/* Quick Overview Sections */}
-            <div style={{ marginBottom: '32px' }}>
-              <h2 style={{
-                fontSize: '24px',
-                fontWeight: '600',
-                marginBottom: '16px',
-                fontFamily: "'LiebeHeide', 'Caveat', cursive"
-              }}>
-                 Active Goals ({savingsGoals.filter(g => !g.isCompleted).length})
-              </h2>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                gap: '16px'
-              }}>
-                {savingsGoals.filter(g => !g.isCompleted).slice(0, 3).map(goal => (
-                  <SavingsGoalCard key={goal.id} goal={goal} />
-                ))}
-              </div>
-            </div>
-
-            {/* Top Wishlist Items */}
-            {wishlistItems.filter(w => !w.isPurchased).length > 0 && (
-              <div>
-                <h2 style={{
-                  fontSize: '24px',
-                  fontWeight: '600',
-                  marginBottom: '16px',
-                  fontFamily: "'LiebeHeide', 'Caveat', cursive"
-                }}>
-                  Top Wishlist Items
-                </h2>
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-                  gap: '16px'
-                }}>
-                  {wishlistItems
-                    .filter(w => !w.isPurchased)
-                    .slice(0, 4)
-                    .map(item => (
-                      <WishlistItemCard
-                        key={item.id}
-                        item={item}
-                        onDelete={() => deleteWishlistItem(item.id)}
-                        onMarkPurchased={() => markWishlistPurchased(item.id)}
-                      />
-                    ))}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Budget Tab */}
-        {activeTab === 'budget' && (
-          <div>
-            <h2 style={{
-              fontSize: '28px',
-              fontWeight: '600',
-              marginBottom: '24px',
-              fontFamily: "'LiebeHeide', 'Caveat', cursive"
-            }}>
-              Monthly Budget
-            </h2>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-              gap: '16px'
-            }}>
-              {budgetCategories.map(category => (
-                <BudgetCategoryCard key={category.id} category={category} />
-              ))}
-            </div>
-
-            {budgetCategories.length === 0 && (
-              <div style={{
-                textAlign: 'center',
-                padding: '60px 20px',
-                color: 'var(--text-light)'
-              }}>
-                <div style={{ fontSize: '64px', marginBottom: '16px' }}>📊</div>
-                <p style={{ fontSize: '18px', marginBottom: '8px' }}>No budget categories yet.</p>
-                <p style={{ fontSize: '14px', marginBottom: '24px' }}>Add some sample data to get started!</p>
-                <button
-                  onClick={handleLoadSampleData}
-                  style={{
-                    padding: '12px 24px',
-                    background: 'var(--accent)',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '20px',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                    fontFamily: "'LiebeHeide', 'Caveat', cursive",
-                    boxShadow: '0 4px 12px rgba(255, 150, 196, 0.3)'
-                  }}
-                >
-                  Load Sample Data
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Savings Tab */}
-        {activeTab === 'savings' && (
-          <div>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '24px'
-            }}>
-              <h2 style={{
-                fontSize: '28px',
-                fontWeight: '600',
-                margin: 0,
-                fontFamily: "'LiebeHeide', 'Caveat', cursive"
-              }}>
-                Savings Goals
-              </h2>
-              <button style={{
-                padding: '10px 20px',
-                background: 'var(--accent)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '20px',
-                fontSize: '14px',
-                fontWeight: '600',
-                cursor: 'pointer'
-              }}>
-                + New Goal
-              </button>
-            </div>
-
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-              gap: '20px'
-            }}>
-              {savingsGoals.map(goal => (
-                <SavingsGoalCard key={goal.id} goal={goal} />
-              ))}
-            </div>
-
-            {savingsGoals.length === 0 && (
-              <div style={{
-                textAlign: 'center',
-                padding: '60px 20px',
-                color: 'var(--text-light)'
-              }}>
-                <div style={{ fontSize: '64px', marginBottom: '16px' }}>🎯</div>
-                <p style={{ fontSize: '18px', marginBottom: '8px' }}>No savings goals yet.</p>
-                <p style={{ fontSize: '14px', marginBottom: '24px' }}>Create your first goal to start saving!</p>
-                <button
-                  onClick={handleLoadSampleData}
-                  style={{
-                    padding: '12px 24px',
-                    background: 'var(--accent)',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '20px',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                    fontFamily: "'LiebeHeide', 'Caveat', cursive",
-                    boxShadow: '0 4px 12px rgba(255, 150, 196, 0.3)'
-                  }}
-                >
-                  Load Sample Data
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Wishlist Tab */}
-        {activeTab === 'wishlist' && (
-          <div>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '24px'
-            }}>
-              <h2 style={{
-                fontSize: '28px',
-                fontWeight: '600',
-                margin: 0,
-                fontFamily: "'LiebeHeide', 'Caveat', cursive"
-              }}>
-                Wishlist
-              </h2>
-              <button style={{
-                padding: '10px 20px',
-                background: 'var(--accent)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '20px',
-                fontSize: '14px',
-                fontWeight: '600',
-                cursor: 'pointer'
-              }}>
-                + Add Item
-              </button>
-            </div>
-
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-              gap: '16px'
-            }}>
-              {wishlistItems.map(item => (
-                <WishlistItemCard
-                  key={item.id}
-                  item={item}
-                  onDelete={() => deleteWishlistItem(item.id)}
-                  onMarkPurchased={() => markWishlistPurchased(item.id)}
-                />
-              ))}
-            </div>
-
-            {wishlistItems.length === 0 && (
-              <div style={{
-                textAlign: 'center',
-                padding: '60px 20px',
-                color: 'var(--text-light)'
-              }}>
-                <div style={{ fontSize: '64px', marginBottom: '16px' }}>🛍️</div>
-                <p style={{ fontSize: '18px', marginBottom: '8px' }}>Your wishlist is empty.</p>
-                <p style={{ fontSize: '14px', marginBottom: '24px' }}>Add items you're dreaming about!</p>
-                <button
-                  onClick={handleLoadSampleData}
-                  style={{
-                    padding: '12px 24px',
-                    background: 'var(--accent)',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '20px',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                    fontFamily: "'LiebeHeide', 'Caveat', cursive",
-                    boxShadow: '0 4px 12px rgba(255, 150, 196, 0.3)'
-                  }}
-                >
-                  Load Sample Data
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+      {/* Hub-only; no content sections */}
+      <div />
     </div>
   )
 }
-

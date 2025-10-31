@@ -9,6 +9,10 @@ import MusicPage from './pages/MusicPage'
 import ExplosionAnimation from './components/ExplosionAnimation'
 import CalendarPage from './pages/CalendarPage'
 import FinancialPage from './pages/FinancialPage'
+import FinancialSavingsPage from './pages/FinancialSavingsPage'
+import FinancialBudgetPage from './pages/FinancialBudgetPage'
+import FinancialWishlistPage from './pages/FinancialWishlistPage'
+import FinancialOverviewPage from './pages/FinancialOverviewPage'
 
 function AppContent() {
   const { currentPage } = useNavigation()
@@ -38,6 +42,18 @@ function AppContent() {
       )}
       {currentPage === 'finance' && (
         <FinancialPage />
+      )}
+      {currentPage === 'finance_overview' && (
+        <FinancialOverviewPage />
+      )}
+      {currentPage === 'finance_savings' && (
+        <FinancialSavingsPage />
+      )}
+      {currentPage === 'finance_budget' && (
+        <FinancialBudgetPage />
+      )}
+      {currentPage === 'finance_wishlist' && (
+        <FinancialWishlistPage />
       )}
     </div>
   )

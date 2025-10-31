@@ -1,11 +1,11 @@
-# Financial Tracker - "Money Moments" 💰
+# Financial Tracker 
 
 ## Overview
 A beautiful, scrapbook-style financial tracker integrated into Momenta. Makes money management feel less intimidating and more like curating your dream life.
 
 ## Features Implemented
 
-### ✅ Core Infrastructure
+###  Core Infrastructure
 - **Type System** (`src/types/financial.ts`)
   - Complete TypeScript interfaces for all financial data
   - Budget categories, savings goals, wishlist items, transactions, etc.
@@ -15,19 +15,19 @@ A beautiful, scrapbook-style financial tracker integrated into Momenta. Makes mo
   - LocalStorage persistence
   - CRUD operations for all financial entities
 
-### ✅ UI Components
+### UI Components
 - **BudgetCategoryCard** - Visual budget tracking with progress bars
 - **SavingsGoalCard** - Gorgeous goal cards with progress visualization
 - **WishlistItemCard** - Pinterest-style wishlist items with images
 
-### ✅ Pages & Navigation
+### Pages & Navigation
 - **FinancialPage** with 4 tabs:
   - Overview: Dashboard with stats and highlights
   - Budget: Category-based budget tracking
   - Savings: Goal visualization and tracking
   - Wishlist: Dream items with save-up tracking
 
-### ✅ Sample Data
+### Sample Data
 - Pre-built sample data for testing (`src/utils/sampleFinancialData.ts`)
 - One-click load sample data button
 - Realistic examples with categories, goals, wishlist items
@@ -60,10 +60,10 @@ Click the menu button → Select "Finance" from the nav menu
 On any empty tab, click the "Load Sample Data" button to populate with example data
 
 ### Features Ready to Use
-- ✅ View budget categories with spending tracking
-- ✅ Browse savings goals with visual progress
-- ✅ Manage wishlist items
-- ✅ Overview dashboard with financial stats
+- View budget categories with spending tracking
+- Browse savings goals with visual progress
+- Manage wishlist items
+- Overview dashboard with financial stats
 
 ## Future Enhancements
 
@@ -135,6 +135,4 @@ On any empty tab, click the "Load Sample Data" button to populate with example d
 4. Data persists in localStorage
 5. Refresh to see data persistence working
 
-## Credits
-Built with ❤️ for Momenta - Making personal finance feel personal and fun!
-
+ 

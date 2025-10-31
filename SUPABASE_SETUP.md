@@ -1,6 +1,6 @@
 # Supabase Setup Guide
 
-## 🚀 Quick Setup
+## Quick Setup
 
 ### 1. Create a Supabase Project
 1. Go to [supabase.com](https://supabase.com)
@@ -57,14 +57,14 @@ If you want Pinterest integration:
 3. Get your App ID and App Secret
 4. Add them to your `.env` file
 
-## ✅ Verification
+## Verification
 
 After setup, your app should:
-- ✅ Compile without TypeScript errors
-- ✅ Connect to Supabase database
-- ✅ Have Pinterest OAuth functionality (if configured)
+- Compile without TypeScript errors
+- Connect to Supabase database
+- Have Pinterest OAuth functionality (if configured)
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 - **TypeScript errors**: Make sure you have the latest dependencies installed
 - **Connection issues**: Verify your Supabase URL and keys are correct
