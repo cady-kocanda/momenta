@@ -1,4 +1,3 @@
-import React from 'react'
 import { useFinancial } from '../contexts/FinancialContext'
 import { useNavigation } from '../contexts/NavigationContext'
 
@@ -29,6 +28,7 @@ export default function FinancialOverviewPage() {
           gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
           gap: '16px',
           marginBottom: '24px'
+
         }}>
           <div style={{ background: 'var(--card-bg)', borderRadius: '16px', padding: '20px', boxShadow: '0 8px 24px rgba(0,0,0,0.08)' }}>
             <div style={{ fontSize: '14px', color: 'var(--text-light)', marginBottom: '6px' }}>Net Worth</div>
